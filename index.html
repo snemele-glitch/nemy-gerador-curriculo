@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nemy - Gerador de Currículo Profissional</title>
+    <title>Nemy - Revista Interativa & Currículo ABNT</title>
+    <!-- Biblioteca PDF.js para ler arquivos PDF enviados -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
             --nemy-pink: #db2777;
@@ -11,8 +13,8 @@
             --nemy-dark: #1e1b4b;
             --bg-dashboard: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #334155;
-            --border-color: #e2e8f0;
+            --text-main: #000000;
+            --border-color: #cbd5e1;
         }
 
         * {
@@ -22,7 +24,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: var(--bg-dashboard);
             color: var(--text-main);
             display: flex;
@@ -32,37 +34,38 @@
 
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: 320px;
             background: var(--nemy-dark);
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 24px;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .brand-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .brand-logo {
             background: var(--nemy-pink);
             color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
         }
 
         .brand-name {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             letter-spacing: 1px;
             color: #ffffff;
@@ -72,23 +75,75 @@
             color: var(--nemy-pink);
         }
 
-        .sidebar-footer {
-            font-size: 0.8rem;
-            color: #64748b;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px;
+        /* Caixa de Importação */
+        .import-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(219, 39, 119, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        /* Layout Principal Dividido */
+        .import-box label {
+            font-size: 0.8rem;
+            color: #fce7f3;
+            cursor: pointer;
+            display: block;
+        }
+
+        .import-box input {
+            display: none;
+        }
+
+        .btn-upload {
+            background: var(--nemy-pink);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        /* Guia de Manuseio na Sidebar */
+        .manual-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: #cbd5e1;
+        }
+
+        .manual-box h4 {
+            color: var(--nemy-pink-light);
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-footer {
+            font-size: 0.75rem;
+            color: #64748b;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* Layout Principal */
         .main-container {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: 450px 1fr;
+            grid-template-columns: 430px 1fr;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Coluna do Editor (Esquerda) */
+        /* Editor (Esquerda) */
         .editor-pane {
             background: var(--card-bg);
             border-right: 1px solid var(--border-color);
@@ -96,35 +151,35 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .editor-pane h2 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--nemy-dark);
             border-bottom: 2px solid var(--nemy-pink-light);
-            padding-bottom: 6px;
-            margin-top: 10px;
+            padding-bottom: 4px;
+            margin-top: 8px;
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .form-control {
             width: 100%;
-            padding: 8px 10px;
+            padding: 8px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             outline: none;
             transition: border-color 0.2s;
         }
@@ -135,12 +190,12 @@
 
         textarea.form-control {
             resize: vertical;
-            height: 90px;
+            height: 80px;
         }
 
-        /* Coluna do Preview (Direita) */
+        /* Preview Revista (Direita) */
         .preview-pane {
-            background: #e2e8f0;
+            background: #cbd5e1;
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -165,77 +220,111 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: opacity 0.2s;
         }
 
         .btn-print:hover {
             opacity: 0.9;
         }
 
-        /* Folha A4 de Visualização */
+        /* Páginas A4 da Revista (Padrão ABNT com Rodapé de Paginação) */
         .resume-sheet {
             background: white;
             width: 210mm;
             min-height: 297mm;
-            padding: 15mm 20mm;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30mm 20mm 25mm 30mm;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20mm;
+            position: relative;
+        }
+
+        .sheet-content {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        /* Estilos do Currículo */
         .cv-header {
-            border-bottom: 2px solid var(--nemy-dark);
-            padding-bottom: 10px;
+            border-bottom: 1.5px solid #000;
+            padding-bottom: 8px;
+            text-align: center;
         }
 
         .cv-name {
-            font-size: 1.6rem;
+            font-size: 15pt;
             font-weight: bold;
-            color: var(--nemy-dark);
+            text-transform: uppercase;
         }
 
         .cv-role {
-            font-size: 1rem;
-            color: var(--nemy-pink);
-            font-weight: 600;
+            font-size: 11pt;
+            font-weight: bold;
+            color: #333;
         }
 
         .cv-contact {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 4px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            font-size: 9.5pt;
+            color: #333;
+            margin-top: 3px;
         }
 
         .cv-section-title {
-            font-size: 0.9rem;
+            font-size: 11pt;
             font-weight: bold;
-            color: var(--nemy-dark);
             text-transform: uppercase;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 3px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
             margin-top: 8px;
-            letter-spacing: 0.5px;
         }
 
         .cv-text-content {
-            font-size: 0.82rem;
+            font-size: 10.5pt;
             line-height: 1.4;
-            color: #334155;
+            text-align: justify;
             white-space: pre-line;
         }
 
-        /* Responsividade para Impressão */
+        /* Rodapé de Paginação e Guia na última página */
+        .sheet-footer {
+            text-align: right;
+            font-size: 9pt;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: 15px;
+        }
+
+        /* Estilo da Seção Guia de Manuseio na Última Página */
+        .manual-page-section {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .manual-page-section h3 {
+            font-size: 11pt;
+            margin-bottom: 6px;
+            color: var(--nemy-dark);
+            text-transform: uppercase;
+        }
+
+        .manual-page-section p {
+            font-size: 9.5pt;
+            line-height: 1.35;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+
         @media print {
             body { background: white; height: auto; overflow: visible; display: block; }
             .sidebar, .editor-pane, .actions-bar { display: none; }
             .main-container { display: block; height: auto; }
             .preview-pane { background: white; padding: 0; overflow: visible; display: block; }
-            .resume-sheet { box-shadow: none; width: 100%; padding: 0; min-height: auto; }
+            .resume-sheet { box-shadow: none; margin: 0; page-break-after: always; width: 100%; min-height: 297mm; }
         }
 
         @media (max-width: 1024px) {
@@ -252,15 +341,24 @@
         <div>
             <div class="brand-container">
                 <div class="brand-logo">N</div>
-                <div class="brand-name">NEMY<span>.</span> CV</div>
+                <div class="brand-name">NEMY<span>.</span> REVISTA CV</div>
             </div>
-            <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.4;">
-                Gerenciador e Criador de Currículos Profissionais. Edite os campos ao lado e gere seu PDF formatado com sua identidade.
-            </p>
+            
+            <div class="import-box">
+                <label>Importar Currículo Existente</label>
+                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF</label>
+                <input type="file" id="cv-file-input" accept=".pdf" onchange="importPDF(event)">
+            </div>
+
+            <div class="manual-box">
+                <h4>📖 Guia Rápido</h4>
+                <p>1. Envie seu PDF acima ou edite os campos abaixo.</p>
+                <p>2. A revista ajusta automaticamente a paginação ABNT.</p>
+                <p>3. O Guia de Manuseio aparece fixo na última página.</p>
+            </div>
         </div>
         <div class="sidebar-footer">
-            <p>Nemy Hub v1.0</p>
-            <p>Nemele Silva • CRC-MG</p>
+            <p>Nemy Hub v1.0 • Nemele Silva</p>
         </div>
     </aside>
 
@@ -269,7 +367,7 @@
         
         <!-- Editor (Esquerda) -->
         <div class="editor-pane">
-            <h2>Dados de Identificação</h2>
+            <h2>Dados Pessoais</h2>
             <div class="form-group">
                 <label>Nome Completo</label>
                 <input type="text" id="input-name" class="form-control" value="Nemele Silva" oninput="updateCV()">
@@ -279,86 +377,90 @@
                 <input type="text" id="input-role" class="form-control" value="Contadora • CRC Ativo" oninput="updateCV()">
             </div>
             <div class="form-group">
-                <label>E-mail & Contato</label>
-                <input type="text" id="input-contact" class="form-control" value="snemele@gmail.com | +55 31 99558-5533 | Santa Luzia, MG" oninput="updateCV()">
+                <label>Contato & Local</label>
+                <input type="text" id="input-contact" class="form-control" value="snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG" oninput="updateCV()">
             </div>
 
             <h2>Resumo Profissional</h2>
             <div class="form-group">
-                <textarea id="input-summary" class="form-control" oninput="updateCV()">Sou Contadora com experiência comprovada na prestação de serviços contábeis, atuando desde a abertura até o encerramento de empresas, além da execução de atividades operacionais e fiscais. Possuo sólida habilidade em conciliação contábil, transmissão de obrigações acessórias (ECD, EFD, PGDAS) e conformidade legal.</textarea>
+                <textarea id="input-summary" class="form-control" oninput="updateCV()">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</textarea>
             </div>
 
             <h2>Experiência Profissional</h2>
             <div class="form-group">
-                <textarea id="input-experience" class="form-control" style="height: 140px;" oninput="updateCV()">• Analista Contábil | Grupo Oncoclínicas / Accenture (Jan/2024 - Atual)
-Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado, apoio à auditoria e controladoria.
-
-• Analista Contábil | STREAMLINED (Dez/2022 - Nov/2023)
-Encerramento de balancetes de Lucro Presumido, Real e Simples Nacional, apuração de tributos (PIS, COFINS, ICMS) e transmissão de ECD/EFD.
-
-• Assistente de Auditoria | Batista & Associados (Ago/2022 - Set/2023)
-Conciliação de contas patrimoniais, testes de auditoria, abertura e alteração contratual na Junta Comercial.</textarea>
+                <textarea id="input-experience" class="form-control" style="height: 110px;" oninput="updateCV()">• Analista Contábil | Grupo Oncoclínicas / Accenture (2024 - Atual)
+• Analista Contábil | STREAMLINED (2022 - 2023)
+• Assistente de Auditoria | Batista & Associados (2022)</textarea>
             </div>
 
-            <h2>Educação & Formação</h2>
+            <h2>Formação & Habilidades</h2>
             <div class="form-group">
-                <textarea id="input-education" class="form-control" oninput="updateCV()">• MBA em Gestão e Planejamento Tributário (Cursando) • Faculdade IBRA
-• Reforma Tributária • Contabilidade Facilitada (Nov/2025 - Jun/2026)
-• Ciências Contábeis (Bacharelado) • UNIBH (Concluído em Dez/2016)</textarea>
-            </div>
-
-            <h2>Habilidades & Ferramentas</h2>
-            <div class="form-group">
-                <textarea id="input-skills" class="form-control" oninput="updateCV()">• Contabilidade Fiscal, Comercial e Pública
-• Sistemas: TOTVS (Datasul), Alterdata, Questor, SAP, Sof, Gestáoclik
-• Obrigações: ECD, EFD Fiscal, PGDAS, DARF, DIRF, SINTEGRA</textarea>
+                <textarea id="input-education" class="form-control" oninput="updateCV()">• Ciências Contábeis - UNIBH | MBA Tributário (Cursando)
+• Sistemas: TOTVS, SAP, Alterdata, Questor, Sof.</textarea>
             </div>
         </div>
 
-        <!-- Preview A4 (Direita) -->
+        <!-- Preview Revista com Páginas Divididas (Direita) -->
         <div class="preview-pane">
             <div class="actions-bar">
-                <button class="btn-print" onclick="window.print()">🖨️ Exportar / Baixar PDF</button>
+                <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Exportar Revista PDF</button>
             </div>
 
+            <!-- PÁGINA 1: Currículo Principal -->
             <div class="resume-sheet">
-                <div class="cv-header">
-                    <div id="cv-out-name" class="cv-name">Nemele Silva</div>
-                    <div id="cv-out-role" class="cv-role">Contadora • CRC Ativo</div>
-                    <div id="cv-out-contact" class="cv-contact">snemele@gmail.com | +55 31 99558-5533 | Santa Luzia, MG</div>
+                <div class="sheet-content">
+                    <div class="cv-header">
+                        <div id="cv-out-name" class="cv-name">Nemele Silva</div>
+                        <div id="cv-out-role" class="cv-role">Contadora • CRC Ativo</div>
+                        <div id="cv-out-contact" class="cv-contact">snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG</div>
+                    </div>
+
+                    <div>
+                        <div class="cv-section-title">Resumo Profissional</div>
+                        <div id="cv-out-summary" class="cv-text-content">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</div>
+                    </div>
+
+                    <div>
+                        <div class="cv-section-title">Experiência Profissional</div>
+                        <div id="cv-out-experience" class="cv-text-content">• Analista Contábil | Grupo Oncoclínicas / Accenture (2024 - Atual)
+• Analista Contábil | STREAMLINED (2022 - 2023)
+• Assistente de Auditoria | Batista & Associados (2022)</div>
+                    </div>
+
+                    <div>
+                        <div class="cv-section-title">Formação & Habilidades</div>
+                        <div id="cv-out-education" class="cv-text-content">• Ciências Contábeis - UNIBH | MBA Tributário (Cursando)
+• Sistemas: TOTVS, SAP, Alterdata, Questor, Sof.</div>
+                    </div>
                 </div>
-
-                <div>
-                    <div class="cv-section-title">Resumo Profissional</div>
-                    <div id="cv-out-summary" class="cv-text-content">Sou Contadora com experiência comprovada na prestação de serviços contábeis, atuando desde a abertura até o encerramento de empresas, além da execução de atividades operacionais e fiscais. Possuo sólida habilidade em conciliação contábil, transmissão de obrigações acessórias (ECD, EFD, PGDAS) e conformidade legal.</div>
-                </div>
-
-                <div>
-                    <div class="cv-section-title">Experiência Profissional</div>
-                    <div id="cv-out-experience" class="cv-text-content">• Analista Contábil | Grupo Oncoclínicas / Accenture (Jan/2024 - Atual)
-Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado, apoio à auditoria e controladoria.
-
-• Analista Contábil | STREAMLINED (Dez/2022 - Nov/2023)
-Encerramento de balancetes de Lucro Presumido, Real e Simples Nacional, apuração de tributos (PIS, COFINS, ICMS) e transmissão de ECD/EFD.
-
-• Assistente de Auditoria | Batista & Associados (Ago/2022 - Set/2023)
-Conciliação de contas patrimoniais, testes de auditoria, abertura e alteração contratual na Junta Comercial.</div>
-                </div>
-
-                <div>
-                    <div class="cv-section-title">Educação & Formação</div>
-                    <div id="cv-out-education" class="cv-text-content">• MBA em Gestão e Planejamento Tributário (Cursando) • Faculdade IBRA
-• Reforma Tributária • Contabilidade Facilitada (Nov/2025 - Jun/2026)
-• Ciências Contábeis (Bacharelado) • UNIBH (Concluído em Dez/2016)</div>
-                </div>
-
-                <div>
-                    <div class="cv-section-title">Habilidades & Ferramentas</div>
-                    <div id="cv-out-skills" class="cv-text-content">• Contabilidade Fiscal, Comercial e Pública
-• Sistemas: TOTVS (Datasul), Alterdata, Questor, SAP, Sof, Gestáoclik
-• Obrigações: ECD, EFD Fiscal, PGDAS, DARF, DIRF, SINTEGRA</div>
-                </div>
+                <div class="sheet-footer">Página 1 de 2</div>
             </div>
+
+            <!-- PÁGINA 2: Guia de Manuseio da Revista -->
+            <div class="resume-sheet">
+                <div class="sheet-content">
+                    <div class="cv-header">
+                        <div class="cv-name">Nemy Hub • Documentação</div>
+                        <div class="cv-role">Guia de Manuseio & Instruções da Revista Interativa</div>
+                    </div>
+
+                    <div class="manual-page-section">
+                        <h3>Como utilizar esta ferramenta</h3>
+                        <p><strong>1. Importação de Arquivos:</strong> Utilize o botão lateral para carregar relatórios ou currículos em formato PDF. O sistema fará a leitura limpa do texto.</p>
+                        <p><strong>2. Edição Dinâmica:</strong> Todas as alterações efetuadas nos campos à esquerda refletem instantaneamente nas páginas da revista formatadas nos padrões ABNT.</p>
+                        <p><strong>3. Exportação Oficial:</strong> Clique no botão superior direito para gerar o arquivo final compilado pronto para impressão ou compartilhamento digital.</p>
+                    </div>
+
+                    <div class="manual-page-section">
+                        <h3>Padrões Técnicos e Normativos</h3>
+                        <p>• <strong>Formatação:</strong> Margens estruturadas (3cm esquerda/superior, 2cm direita/inferior).</p>
+                        <p>• <strong>Tipografia:</strong> Fontes otimizadas para legibilidade executiva e acadêmica.</p>
+                        <p>• <strong>Identidade:</strong> Desenvolvido exclusivamente para a gestão de portfólio e carreira de Nemele Silva (CRC-MG).</p>
+                    </div>
+                </div>
+                <div class="sheet-footer">Página 2 de 2 • Fim do Documento</div>
+            </div>
+
         </div>
 
     </div>
@@ -371,7 +473,30 @@ Conciliação de contas patrimoniais, testes de auditoria, abertura e alteraçã
             document.getElementById('cv-out-summary').innerText = document.getElementById('input-summary').value;
             document.getElementById('cv-out-experience').innerText = document.getElementById('input-experience').value;
             document.getElementById('cv-out-education').innerText = document.getElementById('input-education').value;
-            document.getElementById('cv-out-skills').innerText = document.getElementById('input-skills').value;
+        }
+
+        async function importPDF(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let fullText = "";
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(" ");
+                    fullText += pageText + "\n";
+                }
+
+                document.getElementById('input-experience').value = "Dados importados do PDF:\n" + fullText.trim();
+                updateCV();
+                alert("PDF importado com sucesso na revista!");
+            };
+            reader.readAsArrayBuffer(file);
         }
     </script>
 </body>
