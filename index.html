@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nemy - Revista Interativa & Currículo ABNT</title>
-    <!-- Biblioteca PDF.js para ler arquivos PDF enviados -->
+    <title>Nemy - Revista Interativa & Currículo por Blocos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
@@ -34,7 +33,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 320px;
+            width: 340px;
             background: var(--nemy-dark);
             color: white;
             display: flex;
@@ -75,11 +74,10 @@
             color: var(--nemy-pink);
         }
 
-        /* Caixa de Importação */
         .import-box {
             background: rgba(255, 255, 255, 0.05);
             border: 2px dashed rgba(219, 39, 119, 0.4);
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             text-align: center;
             margin-bottom: 15px;
@@ -100,30 +98,28 @@
             background: var(--nemy-pink);
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 6px;
+            margin-top: 5px;
             display: inline-block;
         }
 
-        /* Guia de Manuseio na Sidebar */
         .manual-box {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 12px;
-            margin-top: 15px;
-            font-size: 0.78rem;
-            line-height: 1.4;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            line-height: 1.35;
             color: #cbd5e1;
         }
 
         .manual-box h4 {
             color: var(--nemy-pink-light);
-            margin-bottom: 6px;
-            font-size: 0.85rem;
+            margin-bottom: 4px;
         }
 
         .sidebar-footer {
@@ -138,16 +134,15 @@
         .main-container {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: 430px 1fr;
+            grid-template-columns: 460px 1fr;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Editor (Esquerda) */
         .editor-pane {
             background: var(--card-bg);
             border-right: 1px solid var(--border-color);
-            padding: 24px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -155,11 +150,11 @@
         }
 
         .editor-pane h2 {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--nemy-dark);
             border-bottom: 2px solid var(--nemy-pink-light);
             padding-bottom: 4px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .form-group {
@@ -168,20 +163,19 @@
 
         .form-group label {
             display: block;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .form-control {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .form-control:focus {
@@ -190,10 +184,36 @@
 
         textarea.form-control {
             resize: vertical;
-            height: 80px;
+            height: 65px;
         }
 
-        /* Preview Revista (Direita) */
+        /* Bloco de Carreira Dinâmico */
+        .career-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .btn-add, .btn-remove {
+            background: var(--nemy-dark);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .btn-remove {
+            background: #ef4444;
+            float: right;
+        }
+
         .preview-pane {
             background: #cbd5e1;
             padding: 24px;
@@ -222,33 +242,27 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .btn-print:hover {
-            opacity: 0.9;
-        }
-
-        /* Páginas A4 da Revista (Padrão ABNT com Rodapé de Paginação) */
         .resume-sheet {
             background: white;
             width: 210mm;
             min-height: 297mm;
-            padding: 30mm 20mm 25mm 30mm;
+            padding: 25mm 20mm 20mm 25mm;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             margin-bottom: 20mm;
-            position: relative;
         }
 
         .sheet-content {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .cv-header {
             border-bottom: 1.5px solid #000;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             text-align: center;
         }
 
@@ -265,38 +279,44 @@
         }
 
         .cv-contact {
-            font-size: 9.5pt;
+            font-size: 9pt;
             color: #333;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .cv-section-title {
-            font-size: 11pt;
+            font-size: 10.5pt;
             font-weight: bold;
             text-transform: uppercase;
             border-bottom: 1px solid #000;
             padding-bottom: 2px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .cv-text-content {
-            font-size: 10.5pt;
-            line-height: 1.4;
+            font-size: 9.5pt;
+            line-height: 1.35;
             text-align: justify;
             white-space: pre-line;
         }
 
-        /* Rodapé de Paginação e Guia na última página */
-        .sheet-footer {
-            text-align: right;
-            font-size: 9pt;
-            color: #64748b;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 8px;
-            margin-top: 15px;
+        .career-item-preview {
+            margin-bottom: 6px;
         }
 
-        /* Estilo da Seção Guia de Manuseio na Última Página */
+        .career-title-prev {
+            font-weight: bold;
+            font-size: 9.5pt;
+        }
+
+        .sheet-footer {
+            text-align: right;
+            font-size: 8.5pt;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 6px;
+        }
+
         .manual-page-section {
             background: #f8fafc;
             border: 1px solid #cbd5e1;
@@ -326,17 +346,10 @@
             .preview-pane { background: white; padding: 0; overflow: visible; display: block; }
             .resume-sheet { box-shadow: none; margin: 0; page-break-after: always; width: 100%; min-height: 297mm; }
         }
-
-        @media (max-width: 1024px) {
-            body { height: auto; overflow: auto; display: block; }
-            .main-container { grid-template-columns: 1fr; height: auto; overflow: visible; }
-            .sidebar { width: 100%; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Nemy -->
     <aside class="sidebar">
         <div>
             <div class="brand-container">
@@ -351,10 +364,10 @@
             </div>
 
             <div class="manual-box">
-                <h4>📖 Guia Rápido</h4>
-                <p>1. Envie seu PDF acima ou edite os campos abaixo.</p>
-                <p>2. A revista ajusta automaticamente a paginação ABNT.</p>
-                <p>3. O Guia de Manuseio aparece fixo na última página.</p>
+                <h4>📖 Guia por Blocos</h4>
+                <p>• Adicione ou remova cargos individualmente.</p>
+                <p>• A edição reflete na hora na Página 1.</p>
+                <p>• Guia de Manuseio fixo na Página 2.</p>
             </div>
         </div>
         <div class="sidebar-footer">
@@ -362,10 +375,9 @@
         </div>
     </aside>
 
-    <!-- Conteúdo Principal -->
     <div class="main-container">
         
-        <!-- Editor (Esquerda) -->
+        <!-- Editor por Blocos (Esquerda) -->
         <div class="editor-pane">
             <h2>Dados Pessoais</h2>
             <div class="form-group">
@@ -386,12 +398,22 @@
                 <textarea id="input-summary" class="form-control" oninput="updateCV()">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</textarea>
             </div>
 
-            <h2>Experiência Profissional</h2>
-            <div class="form-group">
-                <textarea id="input-experience" class="form-control" style="height: 110px;" oninput="updateCV()">• Analista Contábil | Grupo Oncoclínicas / Accenture (2024 - Atual)
-• Analista Contábil | STREAMLINED (2022 - 2023)
-• Assistente de Auditoria | Batista & Associados (2022)</textarea>
+            <h2>Experiência Profissional (Por Blocos)</h2>
+            <div id="career-blocks-container">
+                <!-- Bloco 1 Padrão -->
+                <div class="career-card" data-id="0">
+                    <button class="btn-remove" onclick="removeCareerBlock(0)">Remover</button>
+                    <div class="form-group">
+                        <label>Cargo e Empresa</label>
+                        <input type="text" class="form-control c-title" value="Analista Contábil | Grupo Oncoclínicas / Accenture" oninput="updateCV()">
+                    </div>
+                    <div class="form-group">
+                        <label>Período / Atividades</label>
+                        <textarea class="form-control c-desc" oninput="updateCV()">Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado.</textarea>
+                    </div>
+                </div>
             </div>
+            <button class="btn-add" onclick="addCareerBlock()">+ Adicionar Nova Carreira</button>
 
             <h2>Formação & Habilidades</h2>
             <div class="form-group">
@@ -400,13 +422,13 @@
             </div>
         </div>
 
-        <!-- Preview Revista com Páginas Divididas (Direita) -->
+        <!-- Preview Revista (Direita) -->
         <div class="preview-pane">
             <div class="actions-bar">
                 <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Exportar Revista PDF</button>
             </div>
 
-            <!-- PÁGINA 1: Currículo Principal -->
+            <!-- PÁGINA 1: Currículo por Blocos -->
             <div class="resume-sheet">
                 <div class="sheet-content">
                     <div class="cv-header">
@@ -422,9 +444,9 @@
 
                     <div>
                         <div class="cv-section-title">Experiência Profissional</div>
-                        <div id="cv-out-experience" class="cv-text-content">• Analista Contábil | Grupo Oncoclínicas / Accenture (2024 - Atual)
-• Analista Contábil | STREAMLINED (2022 - 2023)
-• Assistente de Auditoria | Batista & Associados (2022)</div>
+                        <div id="cv-out-career" class="cv-text-content">
+                            <!-- Os blocos aparecem aqui dinamicamente -->
+                        </div>
                     </div>
 
                     <div>
@@ -436,7 +458,7 @@
                 <div class="sheet-footer">Página 1 de 2</div>
             </div>
 
-            <!-- PÁGINA 2: Guia de Manuseio da Revista -->
+            <!-- PÁGINA 2: Guia de Manuseio -->
             <div class="resume-sheet">
                 <div class="sheet-content">
                     <div class="cv-header">
@@ -445,17 +467,16 @@
                     </div>
 
                     <div class="manual-page-section">
-                        <h3>Como utilizar esta ferramenta</h3>
-                        <p><strong>1. Importação de Arquivos:</strong> Utilize o botão lateral para carregar relatórios ou currículos em formato PDF. O sistema fará a leitura limpa do texto.</p>
-                        <p><strong>2. Edição Dinâmica:</strong> Todas as alterações efetuadas nos campos à esquerda refletem instantaneamente nas páginas da revista formatadas nos padrões ABNT.</p>
-                        <p><strong>3. Exportação Oficial:</strong> Clique no botão superior direito para gerar o arquivo final compilado pronto para impressão ou compartilhamento digital.</p>
+                        <h3>Como utilizar esta ferramenta por blocos</h3>
+                        <p><strong>1. Gestão de Carreira:</strong> Adicione múltiplos cargos clicando no botão de nova carreira. Cada bloco possui seu próprio campo de título e atividades.</p>
+                        <p><strong>2. Importação de PDF:</strong> Envie documentos para ler e extrair dados automaticamente[span_1](start_span)[span_1](end_span).</p>
+                        <p><strong>3. Exportação Oficial:</strong> Clique no botão superior para gerar o PDF formatado dentro das normas ABNT.</p>
                     </div>
 
                     <div class="manual-page-section">
                         <h3>Padrões Técnicos e Normativos</h3>
-                        <p>• <strong>Formatação:</strong> Margens estruturadas (3cm esquerda/superior, 2cm direita/inferior).</p>
-                        <p>• <strong>Tipografia:</strong> Fontes otimizadas para legibilidade executiva e acadêmica.</p>
-                        <p>• <strong>Identidade:</strong> Desenvolvido exclusivamente para a gestão de portfólio e carreira de Nemele Silva (CRC-MG).</p>
+                        <p>• <strong>Formatação:</strong> Margens estruturadas e paginação automática.</p>
+                        <p>• <strong>Identidade:</strong> Desenvolvido exclusivamente para a gestão de carreira de Nemele Silva (CRC-MG).</p>
                     </div>
                 </div>
                 <div class="sheet-footer">Página 2 de 2 • Fim do Documento</div>
@@ -466,13 +487,62 @@
     </div>
 
     <script>
+        let blockCounter = 1;
+
+        function addCareerBlock(title = "", desc = "") {
+            const container = document.getElementById('career-blocks-container');
+            const card = document.createElement('div');
+            card.className = 'career-card';
+            card.setAttribute('data-id', blockCounter);
+            
+            card.innerHTML = `
+                <button class="btn-remove" onclick="removeCareerBlock(${blockCounter})">Remover</button>
+                <div class="form-group">
+                    <label>Cargo e Empresa</label>
+                    <input type="text" class="form-control c-title" value="${title}" placeholder="Ex: Analista Contábil | Empresa" oninput="updateCV()">
+                </div>
+                <div class="form-group">
+                    <label>Período / Atividades</label>
+                    <textarea class="form-control c-desc" placeholder="Detalhes das atividades..." oninput="updateCV()">${desc}</textarea>
+                </div>
+            `;
+            container.appendChild(card);
+            blockCounter++;
+            updateCV();
+        }
+
+        function removeCareerBlock(id) {
+            const cards = document.querySelectorAll('.career-card');
+            if (cards.length > 1) {
+                event.target.closest('.career-card').remove();
+                updateCV();
+            } else {
+                alert("Você deve manter pelo menos um bloco de carreira.");
+            }
+        }
+
         function updateCV() {
             document.getElementById('cv-out-name').innerText = document.getElementById('input-name').value;
             document.getElementById('cv-out-role').innerText = document.getElementById('input-role').value;
             document.getElementById('cv-out-contact').innerText = document.getElementById('input-contact').value;
             document.getElementById('cv-out-summary').innerText = document.getElementById('input-summary').value;
-            document.getElementById('cv-out-experience').innerText = document.getElementById('input-experience').value;
             document.getElementById('cv-out-education').innerText = document.getElementById('input-education').value;
+
+            // Coleta dinâmica dos blocos de carreira
+            const careerContainer = document.getElementById('cv-out-career');
+            careerContainer.innerHTML = "";
+            const cards = document.querySelectorAll('.career-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.c-title').value;
+                const desc = card.querySelector('.c-desc').value;
+                if(title || desc) {
+                    const item = document.createElement('div');
+                    item.className = 'career-item-preview';
+                    item.innerHTML = `<div class="career-title-prev">• ${title}</div><div>${desc}</div>`;
+                    careerContainer.appendChild(item);
+                }
+            });
         }
 
         async function importPDF(event) {
@@ -492,12 +562,15 @@
                     fullText += pageText + "\n";
                 }
 
-                document.getElementById('input-experience').value = "Dados importados do PDF:\n" + fullText.trim();
+                alert("PDF lido com sucesso! O texto principal foi carregado no primeiro bloco de carreira.");
+                document.querySelector('.c-desc').value = fullText.trim().substring(0, 400) + "...";
                 updateCV();
-                alert("PDF importado com sucesso na revista!");
             };
             reader.readAsArrayBuffer(file);
         }
+
+        // Executa a primeira atualização ao carregar
+        updateCV();
     </script>
 </body>
 </html>
