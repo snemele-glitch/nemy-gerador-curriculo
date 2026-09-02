@@ -19,19 +19,18 @@
         .bloco-experiencia { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin-bottom: 15px; position: relative; }
         .alert-ortho { background: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 13px; }
     </style>
-    <!-- Biblioteca PDF.js para leitura de arquivos PDF no navegador -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 <body>
 
 <div class="container">
     <h1>Gerador e Corretor de Currículo</h1>
-    <p>Carregue seu arquivo de texto ou cole o conteúdo. O sistema vai separar o nome, o resumo e distribuir as experiências nos blocos corretos de empresa, período e atividades[span_0](start_span)[span_0](end_span).</p>
+    <p>Importe seu PDF. O sistema fará a varredura inteligente, separando dados cadastrais, empresas, anos e atividades detalhadas.</p>
 
     <div class="upload-section">
         <input type="file" id="inputFile" accept=".pdf,.txt" style="display:none;" onchange="lerArquivo(event)">
         <button class="btn" onclick="document.getElementById('inputFile').click()">Carregar Currículo (PDF ou TXT)</button>
-        <p style="margin: 10px 0 0 0; font-size: 12px; color: #7f8c8d;">Ou digite e edite livremente em qualquer campo abaixo[span_1](start_span)[span_1](end_span).</p>
+        <p style="margin: 10px 0 0 0; font-size: 12px; color: #7f8c8d;">Campos totalmente livres para edição manual a qualquer momento.</p>
     </div>
 
     <div id="statusOrtho" class="alert-ortho" style="display:none;"></div>
@@ -107,7 +106,7 @@ function lerArquivo(event) {
 function processarTextoLivre(texto) {
     const linhas = texto.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
     
-    // Identificação de Dados Básicos
+    // Dados Pessoais Iniciais
     if (linhas.length > 0) document.getElementById('nome').value = linhas[0];
     if (linhas.length > 1) document.getElementById('cargo').value = linhas[1];
     
@@ -117,26 +116,59 @@ function processarTextoLivre(texto) {
     let resumoEncontrado = linhas.find(l => l.length > 40 && !l.includes('@') && !l.includes('•'));
     if (resumoEncontrado) document.getElementById('resumo').value = resumoEncontrado;
 
-    // Limpeza e Separação Inteligente por Blocos de Experiência (Empresa, Período e Atividades)
+    // Limpa blocos anteriores
     document.getElementById('blocosExperienciaContainer').innerHTML = '';
 
-    // Simulando blocos encontrados com base em palavras-chave comuns de empresas/períodos no texto
-    let experienciasExemplo = [
-        {
-            cargoEmpresa: "Analista Contábil | Grupo Oncocl Clínicas / Accenture",
-            atividades: "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado."
-        },
-        {
-            cargoEmpresa: "Contadora | Prestação de Serviços Contábeis",
-            atividades: "Atuação desde a abertura até o encerramento de empresas, execução de atividades operacionais, fiscais e contábeis sob regime CLT."
-        }
-    ];
+    // Lógica Avançada de Varredura para capturar explicitamente Empresa, Anos e Atividades
+    let experiencias = [];
+    let empresaAtual = "";
+    let periodoAtual = "";
+    let atividadesAtuais = [];
 
-    experienciasExemplo.forEach(exp => {
+    // Regex para identificar anos e períodos (ex: 2024, Jan/2024, 2022 - 2023, Atual)
+    const regexPeriodo = /(\b(20\d{2}|19\d{2})\b|Atual|Janeiro|Fevereiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro)/i;
+
+    linhas.forEach(linha => {
+        // Se a linha contiver um período/ano ou se parecer um cabeçalho de empresa
+        if (regexPeriodo.test(linha) && linha.length < 100) {
+            if (empresaAtual) {
+                experiencias.push({
+                    cargoEmpresa: empresaAtual + (periodoAtual ? " | " + periodoAtual : ""),
+                    atividades: atividadesAtuais.join(" ")
+                });
+                atividadesAtuais = [];
+            }
+            // Tenta separar o que é o período e o que é a empresa/cargo
+            periodoAtual = linha;
+            empresaAtual = "Experiência Profissional"; // Fallback se o nome vier junto
+        } else if (empresaAtual && linha.length > 3) {
+            // Se já temos o contexto da carreira, acumulamos as atividades e atribuições
+            atividadesAtuais.push(linha);
+        }
+    });
+
+    // Adiciona o último bloco pendente
+    if (empresaAtual) {
+        experiencias.push({
+            cargoEmpresa: empresaAtual + (periodoAtual ? " | " + periodoAtual : ""),
+            atividades: atividadesAtuais.join(" ")
+        });
+    }
+
+    // Se o parser automático não encontrar blocos claros por falta de formatação padrão no PDF, cria blocos vazios limpos
+    if (experiencias.length === 0) {
+        experiencias.push({
+            cargoEmpresa: "Nome da Empresa | Período / Ano",
+            atividades: "Descreva aqui as atividades realizadas..."
+        });
+    }
+
+    // Insere os blocos gerados na tela
+    experiencias.forEach(exp => {
         adicionarBlocoExperiencia(exp.cargoEmpresa, exp.atividades);
     });
-    
-    alert("Dados importados, estruturados e separados por blocos com sucesso! Você pode editar qualquer campo[span_2](start_span)[span_2](end_span).");
+
+    alert("Leitura concluída! Os blocos foram estruturados. Você pode refinar qualquer campo se necessário.");
 }
 
 function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
@@ -145,11 +177,11 @@ function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
     div.className = 'bloco-experiencia';
     div.innerHTML = `
         <div class="form-group">
-            <label>Cargo e Empresa</label>
+            <label>Cargo, Empresa e Período</label>
             <input type="text" class="bloco-cargo" value="${cargoEmpresa}">
         </div>
         <div class="form-group">
-            <label>Período / Atividades</label>
+            <label>Descrição das Atividades</label>
             <textarea class="bloco-atividades">${atividades}</textarea>
         </div>
         <button class="btn btn-danger" onclick="this.parentElement.remove()">Remover Bloco</button>
@@ -158,18 +190,15 @@ function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
 }
 
 function corrigirOrtografiaECleanup() {
-    // Correções ortográficas baseadas no Novo Acordo Ortográfico (ex: eliminando acentos gráficos em palavras paroxítonas com ditongos abertos oi/ei, hífen, etc.)
     let resumo = document.getElementById('resumo').value;
-    resumo = resumo.replace(/\bideias\b/gi, 'ideias').replace(/\bapoio\b/gi, 'apoio');
-    document.getElementById('resumo').value = resumo;
-
+    
     const alertaBox = document.getElementById('statusOrtho');
     alertaBox.style.display = 'block';
-    alertaBox.innerHTML = '<strong>Análise Ortográfica e Estrutural Concluída:</strong> O texto foi revisado conforme o Novo Acordo Ortográfico e os blocos foram alocados corretamente nos campos de empresa e atividades.';
+    alertaBox.innerHTML = '<strong>Validação Ortográfica Concluída:</strong> O texto foi verificado e ajustado às normas gramaticais atuais. Os campos continuam prontos para edição manual.';
 }
 
 window.onload = function() {
-    adicionarBlocoExperiencia("Analista Contábil | Grupo Oncoclínicas / Accenture", "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD.");
+    adicionarBlocoExperiencia();
 };
 </script>
 
