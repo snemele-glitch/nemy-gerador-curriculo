@@ -14,13 +14,11 @@
             --card-bg: #ffffff;
             --text-main: #000000;
             --border-color: #cbd5e1;
+            --error-bg: #fff3cd;
+            --error-text: #856404;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Arial', sans-serif;
@@ -31,112 +29,111 @@
             overflow: hidden;
         }
 
+        /* Sidebar Styles */
         .sidebar {
-            width: 340px;
+            width: 360px;
             background: var(--nemy-dark);
             color: white;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             padding: 20px;
             overflow-y: auto;
+            flex-shrink: 0;
         }
 
         .brand-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .brand-logo {
             background: var(--nemy-pink);
             color: white;
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
         }
 
         .brand-name {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             letter-spacing: 1px;
             color: #ffffff;
         }
 
-        .brand-name span {
-            color: var(--nemy-pink);
-        }
+        .brand-name span { color: var(--nemy-pink); }
 
         .import-box {
             background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(219, 39, 119, 0.4);
-            padding: 10px;
+            border: 2px dashed rgba(219, 39, 119, 0.5);
+            padding: 15px;
             border-radius: 8px;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .import-box label {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #fce7f3;
             cursor: pointer;
             display: block;
+            margin-bottom: 10px;
         }
 
-        .import-box input {
-            display: none;
-        }
+        .import-box input { display: none; }
 
         .btn-upload {
             background: var(--nemy-pink);
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 16px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 5px;
             display: inline-block;
+            transition: background 0.2s;
         }
+
+        .btn-upload:hover { background: #be185d; }
 
         .manual-box {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            line-height: 1.35;
+            padding: 12px;
+            font-size: 0.8rem;
+            line-height: 1.4;
             color: #cbd5e1;
         }
 
-        .manual-box h4 {
-            color: var(--nemy-pink-light);
-            margin-bottom: 4px;
-        }
+        .manual-box h4 { color: var(--nemy-pink-light); margin-bottom: 6px; }
+        .manual-box p { margin-bottom: 4px; }
 
         .sidebar-footer {
             font-size: 0.75rem;
             color: #64748b;
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 10px;
-            margin-top: 10px;
+            margin-top: auto;
         }
 
+        /* Main Container */
         .main-container {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: 460px 1fr;
+            grid-template-columns: 1fr 1fr; /* Dividido meio a meio para acomodar os novos campos */
             height: 100vh;
             overflow: hidden;
         }
 
+        /* Editor Pane */
         .editor-pane {
             background: var(--card-bg);
             border-right: 1px solid var(--border-color);
@@ -144,73 +141,132 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 15px;
         }
 
         .editor-pane h2 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--nemy-dark);
             border-bottom: 2px solid var(--nemy-pink-light);
-            padding-bottom: 4px;
-            margin-top: 6px;
+            padding-bottom: 5px;
+            margin-top: 10px;
         }
 
-        .form-group {
-            margin-bottom: 8px;
+        .personal-data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
+
+        .form-group { margin-bottom: 8px; }
 
         .form-group label {
             display: block;
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .form-control {
             width: 100%;
-            padding: 7px;
+            padding: 8px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        .form-control:focus {
-            border-color: var(--nemy-pink);
-        }
+        .form-control:focus { border-color: var(--nemy-pink); }
 
         textarea.form-control {
             resize: vertical;
-            height: 65px;
+            height: 60px;
+            font-family: inherit; /* Garante que o font-family seja o mesmo do body */
         }
+
+        /* Career Block Styles (Refinadas) */
+        #career-blocks-container { display: flex; flex-direction: column; gap: 15px; }
 
         .career-card {
             background: #f8fafc;
             border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            padding: 15px;
+            border-radius: 8px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .btn-add, .btn-remove {
-            background: var(--nemy-dark);
-            color: white;
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: -5px;
+        }
+
+        .card-header h3 { font-size: 0.9rem; color: var(--nemy-dark); }
+
+        .career-grid-row {
+            display: grid;
+            grid-template-columns: 3fr 2fr 2fr; /* Proporção para Cargo, Empresa, Ano */
+            gap: 10px;
+        }
+
+        .career-activities-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .career-activities-row textarea { height: 100px; }
+
+        .btn-add, .btn-remove, .btn-ortho {
             border: none;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 4px;
+            transition: background 0.2s;
         }
+
+        .btn-add {
+            background: var(--nemy-dark);
+            color: white;
+            margin-top: 15px;
+        }
+        .btn-add:hover { background: #312e81; }
 
         .btn-remove {
             background: #ef4444;
-            float: right;
+            color: white;
+        }
+        .btn-remove:hover { background: #b91c1c; }
+
+        .btn-ortho {
+            background: var(--nemy-pink-light);
+            color: var(--nemy-dark);
+            border: 1px solid var(--nemy-pink);
+            margin-top: 15px;
+        }
+        .btn-ortho:hover { background: var(--nemy-pink); color: white; }
+
+        .ortho-alert-box {
+            background: var(--error-bg);
+            color: var(--error-text);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            display: none;
         }
 
+        /* Preview Pane */
         .preview-pane {
             background: #cbd5e1;
             padding: 24px;
@@ -237,7 +293,9 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background 0.2s;
         }
+        .btn-print:hover { background: #be185d; }
 
         .resume-sheet {
             background: white;
@@ -249,93 +307,77 @@
             flex-direction: column;
             justify-content: space-between;
             margin-bottom: 20mm;
+            page-break-after: always;
         }
 
         .sheet-content {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .cv-header {
             border-bottom: 1.5px solid #000;
-            padding-bottom: 6px;
+            padding-bottom: 8px;
             text-align: center;
         }
 
         .cv-name {
-            font-size: 15pt;
+            font-size: 16pt;
             font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 0.5pt;
         }
 
         .cv-role {
-            font-size: 11pt;
+            font-size: 12pt;
             font-weight: bold;
             color: #333;
+            margin-top: 3px;
         }
 
         .cv-contact {
-            font-size: 9pt;
+            font-size: 9.5pt;
             color: #333;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .cv-section-title {
-            font-size: 10.5pt;
+            font-size: 11pt;
             font-weight: bold;
             text-transform: uppercase;
             border-bottom: 1px solid #000;
-            padding-bottom: 2px;
-            margin-top: 6px;
+            padding-bottom: 3px;
+            margin-top: 10px;
+            margin-bottom: 6px;
         }
 
         .cv-text-content {
-            font-size: 9.5pt;
-            line-height: 1.35;
+            font-size: 10pt;
+            line-height: 1.4;
             text-align: justify;
             white-space: pre-line;
         }
 
-        .career-item-preview {
-            margin-bottom: 8px;
-        }
-
-        .career-title-prev {
+        .career-item-preview { margin-bottom: 12px; }
+        .career-header-prev {
+            display: flex;
+            justify-content: space-between;
             font-weight: bold;
-            font-size: 9.5pt;
+            font-size: 10pt;
+            margin-bottom: 2px;
         }
 
         .sheet-footer {
             text-align: right;
-            font-size: 8.5pt;
+            font-size: 9pt;
             color: #64748b;
             border-top: 1px solid #e2e8f0;
-            padding-top: 6px;
+            padding-top: 8px;
+            margin-top: 20px;
         }
 
-        .manual-page-section {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .manual-page-section h3 {
-            font-size: 11pt;
-            margin-bottom: 6px;
-            color: var(--nemy-dark);
-            text-transform: uppercase;
-        }
-
-        .manual-page-section p {
-            font-size: 9.5pt;
-            line-height: 1.35;
-            color: #334155;
-            margin-bottom: 4px;
-        }
-
+        /* Print Styles */
         @media print {
             body { background: white; height: auto; overflow: visible; display: block; }
             .sidebar, .editor-pane, .actions-bar { display: none; }
@@ -355,214 +397,32 @@
             </div>
             
             <div class="import-box">
-                <label>Importar Currículo Existente</label>
-                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF</label>
+                <label>Carregar Currículo PDF</label>
+                <label for="cv-file-input" class="btn-upload">📁 Selecionar PDF</label>
                 <input type="file" id="cv-file-input" accept=".pdf" onchange="importPDF(event)">
             </div>
 
             <div class="manual-box">
-                <h4>📖 Guia por Blocos</h4>
-                <p>• O envio de PDF agora segrega os blocos automaticamente.</p>
-                <p>• Edite cada carreira de forma isolada.</p>
-                <p>• Acesse o site publicamente pelo link da Vercel.</p>
+                <h4>📖 Guia de Edição Inteligente</h4>
+                <p>• Ao enviar seu PDF, o sistema identificará automaticamente os blocos de experiência.</p>
+                <p>• **Novo:** Os campos de **Cargo, Empresa, Ano e Atividades** são segregados para facilitar sua edição individual.</p>
+                <p>• Use o botão abaixo para verificar a ortografia de seus textos.</p>
             </div>
         </div>
         <div class="sidebar-footer">
-            <p>Nemy Hub v1.0 • Nemele Silva</p>
+            <p>Nemy Hub v2.0 • Nemele Silva</p>
         </div>
     </aside>
 
-    <div class="main-container">
+    <main class="main-container">
         
         <div class="editor-pane">
             <h2>Dados Pessoais</h2>
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="input-name" class="form-control" value="Nemele Silva" oninput="updateCV()">
-            </div>
-            <div class="form-group">
-                <label>Cargo / Profissão</label>
-                <input type="text" id="input-role" class="form-control" value="Contadora • CRC Ativo" oninput="updateCV()">
-            </div>
-            <div class="form-group">
-                <label>Contato & Local</label>
-                <input type="text" id="input-contact" class="form-control" value="snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG" oninput="updateCV()">
-            </div>
-
-            <h2>Resumo Profissional</h2>
-            <div class="form-group">
-                <textarea id="input-summary" class="form-control" oninput="updateCV()">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</textarea>
-            </div>
-
-            <h2>Experiência Profissional (Por Blocos)</h2>
-            <div id="career-blocks-container">
-                <div class="career-card">
-                    <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
-                    <div class="form-group">
-                        <label>Cargo e Empresa</label>
-                        <input type="text" class="form-control c-title" value="Analista Contábil | Grupo Oncoclínicas / Accenture" oninput="updateCV()">
-                    </div>
-                    <div class="form-group">
-                        <label>Período / Atividades</label>
-                        <textarea class="form-control c-desc" oninput="updateCV()">Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado.</textarea>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addCareerBlock('', '')">+ Adicionar Nova Carreira</button>
-
-            <h2>Formação & Habilidades</h2>
-            <div class="form-group">
-                <textarea id="input-education" class="form-control" oninput="updateCV()">• Ciências Contábeis (Bacharelado) - UNIBH
-• MBA em Gestão e Planejamento Tributário (Cursando)</textarea>
-            </div>
-        </div>
-
-        <div class="preview-pane">
-            <div class="actions-bar">
-                <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Exportar Revista PDF</button>
-            </div>
-
-            <div class="resume-sheet">
-                <div class="sheet-content">
-                    <div class="cv-header">
-                        <div id="cv-out-name" class="cv-name">Nemele Silva</div>
-                        <div id="cv-out-role" class="cv-role">Contadora • CRC Ativo</div>
-                        <div id="cv-out-contact" class="cv-contact">snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG</div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Resumo Profissional</div>
-                        <div id="cv-out-summary" class="cv-text-content">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Experiência Profissional</div>
-                        <div id="cv-out-career" class="cv-text-content"></div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Formação & Habilidades</div>
-                        <div id="cv-out-education" class="cv-text-content">• Ciências Contábeis (Bacharelado) - UNIBH
-• MBA em Gestão e Planejamento Tributário (Cursando)</div>
-                    </div>
-                </div>
-                <div class="sheet-footer">Página 1 de 2</div>
-            </div>
-
-            <div class="resume-sheet">
-                <div class="sheet-content">
-                    <div class="cv-header">
-                        <div class="cv-name">Nemy Hub • Documentação</div>
-                        <div class="cv-role">Guia de Manuseio & Instruções da Revista Interativa</div>
-                    </div>
-
-                    <div class="manual-page-section">
-                        <h3>Como utilizar esta ferramenta</h3>
-                        <p><strong>1. Importação de PDF:</strong> Ao enviar seu currículo, o sistema tenta ler e criar blocos segregados de carreira automaticamente.</p>
-                        <p><strong>2. Edição por Blocos:</strong> Modifique ou adicione novas experiências de forma isolada e limpa.</p>
-                        <p><strong>3. Publicação Web:</strong> O projeto está hospedado e público na Vercel para acesso remoto imediato.</p>
-                    </div>
-
-                    <div class="manual-page-section">
-                        <h3>Padrões Técnicos e Normativos</h3>
-                        <p>• <strong>Formatação:</strong> Margens estruturadas e paginação automática.</p>
-                        <p>• <strong>Identidade:</strong> Desenvolvido exclusivamente para a gestão de carreira de Nemele Silva (CRC-MG).</p>
-                    </div>
-                </div>
-                <div class="sheet-footer">Página 2 de 2 • Fim do Documento</div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <script>
-        function addCareerBlock(title, desc) {
-            const container = document.getElementById('career-blocks-container');
-            const card = document.createElement('div');
-            card.className = 'career-card';
-            card.innerHTML = `
-                <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
+            <div class="personal-data-grid">
                 <div class="form-group">
-                    <label>Cargo e Empresa</label>
-                    <input type="text" class="form-control c-title" value="${title}" placeholder="Ex: Analista Contábil | Empresa" oninput="updateCV()">
+                    <label>Nome Completo</label>
+                    <input type="text" id="input-name" class="form-control" value="Nemele Silva" oninput="updateCV()">
                 </div>
                 <div class="form-group">
-                    <label>Período / Atividades</label>
-                    <textarea class="form-control c-desc" placeholder="Detalhes das atividades..." oninput="updateCV()">${desc}</textarea>
-                </div>
-            `;
-            container.appendChild(card);
-            updateCV();
-        }
-
-        function updateCV() {
-            document.getElementById('cv-out-name').innerText = document.getElementById('input-name').value;
-            document.getElementById('cv-out-role').innerText = document.getElementById('input-role').value;
-            document.getElementById('cv-out-contact').innerText = document.getElementById('input-contact').value;
-            document.getElementById('cv-out-summary').innerText = document.getElementById('input-summary').value;
-            document.getElementById('cv-out-education').innerText = document.getElementById('input-education').value;
-
-            const careerContainer = document.getElementById('cv-out-career');
-            careerContainer.innerHTML = "";
-            const cards = document.querySelectorAll('.career-card');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('.c-title').value;
-                const desc = card.querySelector('.c-desc').value;
-                if(title || desc) {
-                    const item = document.createElement('div');
-                    item.className = 'career-item-preview';
-                    item.innerHTML = `<div class="career-title-prev">• ${title}</div><div>${desc}</div>`;
-                    careerContainer.appendChild(item);
-                }
-            });
-        }
-
-        async function importPDF(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async function() {
-                const typedarray = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                let fullText = "";
-
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(" ");
-                    fullText += pageText + "\n";
-                }
-
-                // Limpa o container anterior de blocos
-                document.getElementById('career-blocks-container').innerHTML = "";
-
-                // Tentativa de segmentação por blocos comuns (procurando palavras de cargo ou datas)
-                let chunks = fullText.split(/(?=Analista|Assistente|Contadora|Estagiária)/g);
-                
-                if (chunks.length > 1) {
-                    chunks.forEach(chunk => {
-                        if (chunk.trim().length > 20) {
-                            let lines = chunk.trim().split("\n");
-                            let title = lines[0] ? lines[0].substring(0, 60) : "Experiência Profissional";
-                            let desc = chunk.replace(title, "").trim().substring(0, 300);
-                            addCareerBlock(title, desc);
-                        }
-                    });
-                } else {
-                    addCareerBlock("Experiência Importada", fullText.trim().substring(0, 400));
-                }
-
-                updateCV();
-                alert("PDF importado e segregado por blocos com sucesso!");
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        updateCV();
-    </script>
-</body>
-</html>
-Criador de currículo
+                    <label>CRC Ativo</label>
+                    <input type="text" id="input-crc" class="form-control" value="CRCMG 111111" oninput="updateCV
