@@ -149,13 +149,15 @@
             display: inline-block;
             background-color: var(--primary);
             color: white;
-            padding: 0.6rem 1.2rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 0.5rem;
             transition: background 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
         }
         
         .download-btn:hover {
@@ -169,27 +171,44 @@
             font-size: 0.8rem;
         }
 
+        /* Regras de Impressão otimizadas para PDF (Sem cortes e tamanho A4 exato) */
         @media print {
-            .download-box, header {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+            .download-box, header, footer {
                 display: none !important;
             }
             body {
                 background-color: #fff;
                 color: #000;
+                font-size: 10pt;
+            }
+            .container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
             .card {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-                margin-bottom: 0.5rem;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin-bottom: 1rem !important;
+                page-break-inside: avoid;
             }
             h2 {
-                border-bottom: none;
-                font-size: 1.2rem;
-                margin-bottom: 0.2rem;
+                border-bottom: 1px solid #000 !important;
+                font-size: 12pt !important;
+                margin-bottom: 0.5rem !important;
+                color: #000 !important;
             }
             .timeline-item {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.8rem !important;
+                page-break-inside: avoid;
+            }
+            .timeline-item h3 {
+                color: #000 !important;
             }
         }
     </style>
@@ -400,12 +419,11 @@
             </div>
         </div>
 
-        <!-- Caixa de Opções para o Recrutador baixar em PDF -->
+        <!-- Caixa de Opções para o Recrutador salvar em PDF sem erros -->
         <div class="download-box card">
-            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">📥 Opções para Recrutadores</h3>
-            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Você pode visualizar o currículo completo acima ou extraí-lo instantaneamente em PDF:</p>
-            <a href="Curriculo_Nemele_Silva.pdf" download class="download-btn">📄 Baixar Currículo Oficial em PDF</a>
-            <button onclick="window.print()" class="download-btn" style="background-color: var(--secondary); margin-left: 10px; border: none; cursor: pointer;">🖨️ Salvar Página como PDF</button>
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">📥 Salvar Currículo em PDF</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Clique no botão abaixo para gerar o PDF formatado perfeitamente para leitura e envio:</p>
+            <button onclick="window.print()" class="download-btn">🖨️ Salvar Página como PDF (Formato Perfeito)</button>
         </div>
 
     </div>
@@ -416,4 +434,3 @@
 
 </body>
 </html>
-
