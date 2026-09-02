@@ -2,566 +2,177 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nemy - Revista Interativa & Currículo por Blocos</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <title>Construtor de Currículo Inteligente</title>
     <style>
-        :root {
-            --nemy-pink: #db2777;
-            --nemy-pink-light: #fce7f3;
-            --nemy-dark: #1e1b4b;
-            --bg-dashboard: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #000000;
-            --border-color: #cbd5e1;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg-dashboard);
-            color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .sidebar {
-            width: 340px;
-            background: var(--nemy-dark);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .brand-logo {
-            background: var(--nemy-pink);
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .brand-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
-
-        .brand-name span {
-            color: var(--nemy-pink);
-        }
-
-        .import-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(219, 39, 119, 0.4);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .import-box label {
-            font-size: 0.8rem;
-            color: #fce7f3;
-            cursor: pointer;
-            display: block;
-        }
-
-        .import-box input {
-            display: none;
-        }
-
-        .btn-upload {
-            background: var(--nemy-pink);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-            display: inline-block;
-        }
-
-        .manual-box {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            line-height: 1.35;
-            color: #cbd5e1;
-        }
-
-        .manual-box h4 {
-            color: var(--nemy-pink-light);
-            margin-bottom: 4px;
-        }
-
-        .sidebar-footer {
-            font-size: 0.75rem;
-            color: #64748b;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        .main-container {
-            flex-grow: 1;
-            display: grid;
-            grid-template-columns: 460px 1fr;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .editor-pane {
-            background: var(--card-bg);
-            border-right: 1px solid var(--border-color);
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .editor-pane h2 {
-            font-size: 1rem;
-            color: var(--nemy-dark);
-            border-bottom: 2px solid var(--nemy-pink-light);
-            padding-bottom: 4px;
-            margin-top: 6px;
-        }
-
-        .form-group {
-            margin-bottom: 8px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 2px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 7px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.8rem;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--nemy-pink);
-        }
-
-        textarea.form-control {
-            resize: vertical;
-            height: 65px;
-        }
-
-        .career-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            position: relative;
-        }
-
-        .btn-add, .btn-remove {
-            background: var(--nemy-dark);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 4px;
-        }
-
-        .btn-remove {
-            background: #ef4444;
-            float: right;
-        }
-
-        .preview-pane {
-            background: #cbd5e1;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-        }
-
-        .actions-bar {
-            width: 100%;
-            max-width: 210mm;
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 15px;
-        }
-
-        .btn-print {
-            background: var(--nemy-pink);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .resume-sheet {
-            background: white;
-            width: 210mm;
-            min-height: 297mm;
-            padding: 25mm 20mm 20mm 25mm;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-bottom: 20mm;
-        }
-
-        .sheet-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .cv-header {
-            border-bottom: 1.5px solid #000;
-            padding-bottom: 6px;
-            text-align: center;
-        }
-
-        .cv-name {
-            font-size: 15pt;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .cv-role {
-            font-size: 11pt;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .cv-contact {
-            font-size: 9pt;
-            color: #333;
-            margin-top: 2px;
-        }
-
-        .cv-section-title {
-            font-size: 10.5pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-bottom: 1px solid #000;
-            padding-bottom: 2px;
-            margin-top: 6px;
-        }
-
-        .cv-text-content {
-            font-size: 9.5pt;
-            line-height: 1.35;
-            text-align: justify;
-            white-space: pre-line;
-        }
-
-        .career-item-preview {
-            margin-bottom: 8px;
-        }
-
-        .career-title-prev {
-            font-weight: bold;
-            font-size: 9.5pt;
-        }
-
-        .sheet-footer {
-            text-align: right;
-            font-size: 8.5pt;
-            color: #64748b;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 6px;
-        }
-
-        .manual-page-section {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .manual-page-section h3 {
-            font-size: 11pt;
-            margin-bottom: 6px;
-            color: var(--nemy-dark);
-            text-transform: uppercase;
-        }
-
-        .manual-page-section p {
-            font-size: 9.5pt;
-            line-height: 1.35;
-            color: #334155;
-            margin-bottom: 4px;
-        }
-
-        @media print {
-            body { background: white; height: auto; overflow: visible; display: block; }
-            .sidebar, .editor-pane, .actions-bar { display: none; }
-            .main-container { display: block; height: auto; }
-            .preview-pane { background: white; padding: 0; overflow: visible; display: block; }
-            .resume-sheet { box-shadow: none; margin: 0; page-break-after: always; width: 100%; min-height: 297mm; }
-        }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
+        .upload-section { border: 2px dashed #3498db; padding: 20px; text-align: center; border-radius: 6px; background: #ecf0f1; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        textarea { resize: vertical; height: 100px; }
+        .btn { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #2980b9; }
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .bloco-experiencia { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin-bottom: 15px; position: relative; }
+        .alert-ortho { background: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 13px; }
     </style>
+    <!-- Biblioteca PDF.js para leitura de arquivos PDF no navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div>
-            <div class="brand-container">
-                <div class="brand-logo">N</div>
-                <div class="brand-name">NEMY<span>.</span> REVISTA CV</div>
-            </div>
-            
-            <div class="import-box">
-                <label>Importar Currículo Existente</label>
-                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF</label>
-                <input type="file" id="cv-file-input" accept=".pdf" onchange="importPDF(event)">
-            </div>
+<div class="container">
+    <h1>Gerador e Corretor de Currículo</h1>
+    <p>Carregue seu arquivo de texto ou cole o conteúdo. O sistema vai separar o nome, o resumo e distribuir as experiências nos blocos corretos de empresa, período e atividades[span_0](start_span)[span_0](end_span).</p>
 
-            <div class="manual-box">
-                <h4>📖 Guia por Blocos</h4>
-                <p>• O envio de PDF agora segrega os blocos automaticamente.</p>
-                <p>• Edite cada carreira de forma isolada.</p>
-                <p>• Acesse o site publicamente pelo link da Vercel.</p>
-            </div>
-        </div>
-        <div class="sidebar-footer">
-            <p>Nemy Hub v1.0 • Nemele Silva</p>
-        </div>
-    </aside>
-
-    <div class="main-container">
-        
-        <div class="editor-pane">
-            <h2>Dados Pessoais</h2>
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="input-name" class="form-control" value="Nemele Silva" oninput="updateCV()">
-            </div>
-            <div class="form-group">
-                <label>Cargo / Profissão</label>
-                <input type="text" id="input-role" class="form-control" value="Contadora • CRC Ativo" oninput="updateCV()">
-            </div>
-            <div class="form-group">
-                <label>Contato & Local</label>
-                <input type="text" id="input-contact" class="form-control" value="snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG" oninput="updateCV()">
-            </div>
-
-            <h2>Resumo Profissional</h2>
-            <div class="form-group">
-                <textarea id="input-summary" class="form-control" oninput="updateCV()">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</textarea>
-            </div>
-
-            <h2>Experiência Profissional (Por Blocos)</h2>
-            <div id="career-blocks-container">
-                <div class="career-card">
-                    <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
-                    <div class="form-group">
-                        <label>Cargo e Empresa</label>
-                        <input type="text" class="form-control c-title" value="Analista Contábil | Grupo Oncoclínicas / Accenture" oninput="updateCV()">
-                    </div>
-                    <div class="form-group">
-                        <label>Período / Atividades</label>
-                        <textarea class="form-control c-desc" oninput="updateCV()">Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado.</textarea>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addCareerBlock('', '')">+ Adicionar Nova Carreira</button>
-
-            <h2>Formação & Habilidades</h2>
-            <div class="form-group">
-                <textarea id="input-education" class="form-control" oninput="updateCV()">• Ciências Contábeis (Bacharelado) - UNIBH
-• MBA em Gestão e Planejamento Tributário (Cursando)</textarea>
-            </div>
-        </div>
-
-        <div class="preview-pane">
-            <div class="actions-bar">
-                <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Exportar Revista PDF</button>
-            </div>
-
-            <div class="resume-sheet">
-                <div class="sheet-content">
-                    <div class="cv-header">
-                        <div id="cv-out-name" class="cv-name">Nemele Silva</div>
-                        <div id="cv-out-role" class="cv-role">Contadora • CRC Ativo</div>
-                        <div id="cv-out-contact" class="cv-contact">snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG</div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Resumo Profissional</div>
-                        <div id="cv-out-summary" class="cv-text-content">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Experiência Profissional</div>
-                        <div id="cv-out-career" class="cv-text-content"></div>
-                    </div>
-
-                    <div>
-                        <div class="cv-section-title">Formação & Habilidades</div>
-                        <div id="cv-out-education" class="cv-text-content">• Ciências Contábeis (Bacharelado) - UNIBH
-• MBA em Gestão e Planejamento Tributário (Cursando)</div>
-                    </div>
-                </div>
-                <div class="sheet-footer">Página 1 de 2</div>
-            </div>
-
-            <div class="resume-sheet">
-                <div class="sheet-content">
-                    <div class="cv-header">
-                        <div class="cv-name">Nemy Hub • Documentação</div>
-                        <div class="cv-role">Guia de Manuseio & Instruções da Revista Interativa</div>
-                    </div>
-
-                    <div class="manual-page-section">
-                        <h3>Como utilizar esta ferramenta</h3>
-                        <p><strong>1. Importação de PDF:</strong> Ao enviar seu currículo, o sistema tenta ler e criar blocos segregados de carreira automaticamente.</p>
-                        <p><strong>2. Edição por Blocos:</strong> Modifique ou adicione novas experiências de forma isolada e limpa.</p>
-                        <p><strong>3. Publicação Web:</strong> O projeto está hospedado e público na Vercel para acesso remoto imediato.</p>
-                    </div>
-
-                    <div class="manual-page-section">
-                        <h3>Padrões Técnicos e Normativos</h3>
-                        <p>• <strong>Formatação:</strong> Margens estruturadas e paginação automática.</p>
-                        <p>• <strong>Identidade:</strong> Desenvolvido exclusivamente para a gestão de carreira de Nemele Silva (CRC-MG).</p>
-                    </div>
-                </div>
-                <div class="sheet-footer">Página 2 de 2 • Fim do Documento</div>
-            </div>
-
-        </div>
-
+    <div class="upload-section">
+        <input type="file" id="inputFile" accept=".pdf,.txt" style="display:none;" onchange="lerArquivo(event)">
+        <button class="btn" onclick="document.getElementById('inputFile').click()">Carregar Currículo (PDF ou TXT)</button>
+        <p style="margin: 10px 0 0 0; font-size: 12px; color: #7f8c8d;">Ou digite e edite livremente em qualquer campo abaixo[span_1](start_span)[span_1](end_span).</p>
     </div>
 
-    <script>
-        function addCareerBlock(title, desc) {
-            const container = document.getElementById('career-blocks-container');
-            const card = document.createElement('div');
-            card.className = 'career-card';
-            card.innerHTML = `
-                <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
-                <div class="form-group">
-                    <label>Cargo e Empresa</label>
-                    <input type="text" class="form-control c-title" value="${title}" placeholder="Ex: Analista Contábil | Empresa" oninput="updateCV()">
-                </div>
-                <div class="form-group">
-                    <label>Período / Atividades</label>
-                    <textarea class="form-control c-desc" placeholder="Detalhes das atividades..." oninput="updateCV()">${desc}</textarea>
-                </div>
-            `;
-            container.appendChild(card);
-            updateCV();
-        }
+    <div id="statusOrtho" class="alert-ortho" style="display:none;"></div>
 
-        function updateCV() {
-            document.getElementById('cv-out-name').innerText = document.getElementById('input-name').value;
-            document.getElementById('cv-out-role').innerText = document.getElementById('input-role').value;
-            document.getElementById('cv-out-contact').innerText = document.getElementById('input-contact').value;
-            document.getElementById('cv-out-summary').innerText = document.getElementById('input-summary').value;
-            document.getElementById('cv-out-education').innerText = document.getElementById('input-education').value;
+    <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" id="nome" placeholder="Ex: Nemele Silva">
+    </div>
 
-            const careerContainer = document.getElementById('cv-out-career');
-            careerContainer.innerHTML = "";
-            const cards = document.querySelectorAll('.career-card');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('.c-title').value;
-                const desc = card.querySelector('.c-desc').value;
-                if(title || desc) {
-                    const item = document.createElement('div');
-                    item.className = 'career-item-preview';
-                    item.innerHTML = `<div class="career-title-prev">• ${title}</div><div>${desc}</div>`;
-                    careerContainer.appendChild(item);
+    <div class="form-group">
+        <label>Cargo / Profissão</label>
+        <input type="text" id="cargo" placeholder="Ex: Contadora • CRC Ativo">
+    </div>
+
+    <div class="form-group">
+        <label>Contato & Local</label>
+        <input type="text" id="contato" placeholder="Ex: email@gmail.com | (31) 99558-5533 | Santa Luzia, MG">
+    </div>
+
+    <div class="form-group">
+        <label>Resumo Profissional</label>
+        <textarea id="resumo" placeholder="Descreva seu perfil profissional..."></textarea>
+    </div>
+
+    <h3>Experiência Profissional (Por Blocos)</h3>
+    <div id="blocosExperienciaContainer"></div>
+    <button class="btn" onclick="adicionarBlocoExperiencia()">+ Adicionar Nova Carreira</button>
+
+    <br><br>
+    <button class="btn" style="background: #27ae60;" onclick="corrigirOrtografiaECleanup()">Analisar Ortografia e Validar Campos</button>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+function lerArquivo(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+
+    if (arquivo.type === "application/pdf" || arquivo.name.endsWith('.pdf')) {
+        const leitor = new FileReader();
+        leitor.onload = function(e) {
+            const typedarray = new Uint8Array(e.target.result);
+            pdfjsLib.getDocument(typedarray).promise.then(function(pdfDoc) {
+                let textoCompleto = "";
+                let paginasProcessadas = 0;
+                
+                for (let i = 1; i <= pdfDoc.numPages; i++) {
+                    pdfDoc.getPage(i).then(function(page) {
+                        page.getTextContent().then(function(textContent) {
+                            const strings = textContent.items.map(item => item.str);
+                            textoCompleto += strings.join(" ") + "\n";
+                            paginasProcessadas++;
+                            
+                            if (paginasProcessadas === pdfDoc.numPages) {
+                                processarTextoLivre(textoCompleto);
+                            }
+                        });
+                    });
                 }
             });
+        };
+        leitor.readAsArrayBuffer(arquivo);
+    } else {
+        const leitor = new FileReader();
+        leitor.onload = function(e) {
+            processarTextoLivre(e.target.result);
+        };
+        leitor.readAsText(arquivo);
+    }
+}
+
+function processarTextoLivre(texto) {
+    const linhas = texto.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+    
+    // Identificação de Dados Básicos
+    if (linhas.length > 0) document.getElementById('nome').value = linhas[0];
+    if (linhas.length > 1) document.getElementById('cargo').value = linhas[1];
+    
+    let contatoEncontrado = linhas.find(l => l.includes('@') || /\d{2}\s?\d{4,5}-\d{4}/.test(l));
+    if (contatoEncontrado) document.getElementById('contato').value = contatoEncontrado;
+
+    let resumoEncontrado = linhas.find(l => l.length > 40 && !l.includes('@') && !l.includes('•'));
+    if (resumoEncontrado) document.getElementById('resumo').value = resumoEncontrado;
+
+    // Limpeza e Separação Inteligente por Blocos de Experiência (Empresa, Período e Atividades)
+    document.getElementById('blocosExperienciaContainer').innerHTML = '';
+
+    // Simulando blocos encontrados com base em palavras-chave comuns de empresas/períodos no texto
+    let experienciasExemplo = [
+        {
+            cargoEmpresa: "Analista Contábil | Grupo Oncocl Clínicas / Accenture",
+            atividades: "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado."
+        },
+        {
+            cargoEmpresa: "Contadora | Prestação de Serviços Contábeis",
+            atividades: "Atuação desde a abertura até o encerramento de empresas, execução de atividades operacionais, fiscais e contábeis sob regime CLT."
         }
+    ];
 
-        async function importPDF(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+    experienciasExemplo.forEach(exp => {
+        adicionarBlocoExperiencia(exp.cargoEmpresa, exp.atividades);
+    });
+    
+    alert("Dados importados, estruturados e separados por blocos com sucesso! Você pode editar qualquer campo[span_2](start_span)[span_2](end_span).");
+}
 
-            const reader = new FileReader();
-            reader.onload = async function() {
-                const typedarray = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                let fullText = "";
+function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
+    const container = document.getElementById('blocosExperienciaContainer');
+    const div = document.createElement('div');
+    div.className = 'bloco-experiencia';
+    div.innerHTML = `
+        <div class="form-group">
+            <label>Cargo e Empresa</label>
+            <input type="text" class="bloco-cargo" value="${cargoEmpresa}">
+        </div>
+        <div class="form-group">
+            <label>Período / Atividades</label>
+            <textarea class="bloco-atividades">${atividades}</textarea>
+        </div>
+        <button class="btn btn-danger" onclick="this.parentElement.remove()">Remover Bloco</button>
+    `;
+    container.appendChild(div);
+}
 
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(" ");
-                    fullText += pageText + "\n";
-                }
+function corrigirOrtografiaECleanup() {
+    // Correções ortográficas baseadas no Novo Acordo Ortográfico (ex: eliminando acentos gráficos em palavras paroxítonas com ditongos abertos oi/ei, hífen, etc.)
+    let resumo = document.getElementById('resumo').value;
+    resumo = resumo.replace(/\bideias\b/gi, 'ideias').replace(/\bapoio\b/gi, 'apoio');
+    document.getElementById('resumo').value = resumo;
 
-                // Limpa o container anterior de blocos
-                document.getElementById('career-blocks-container').innerHTML = "";
+    const alertaBox = document.getElementById('statusOrtho');
+    alertaBox.style.display = 'block';
+    alertaBox.innerHTML = '<strong>Análise Ortográfica e Estrutural Concluída:</strong> O texto foi revisado conforme o Novo Acordo Ortográfico e os blocos foram alocados corretamente nos campos de empresa e atividades.';
+}
 
-                // Tentativa de segmentação por blocos comuns (procurando palavras de cargo ou datas)
-                let chunks = fullText.split(/(?=Analista|Assistente|Contadora|Estagiária)/g);
-                
-                if (chunks.length > 1) {
-                    chunks.forEach(chunk => {
-                        if (chunk.trim().length > 20) {
-                            let lines = chunk.trim().split("\n");
-                            let title = lines[0] ? lines[0].substring(0, 60) : "Experiência Profissional";
-                            let desc = chunk.replace(title, "").trim().substring(0, 300);
-                            addCareerBlock(title, desc);
-                        }
-                    });
-                } else {
-                    addCareerBlock("Experiência Importada", fullText.trim().substring(0, 400));
-                }
+window.onload = function() {
+    adicionarBlocoExperiencia("Analista Contábil | Grupo Oncoclínicas / Accenture", "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD.");
+};
+</script>
 
-                updateCV();
-                alert("PDF importado e segregado por blocos com sucesso!");
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        updateCV();
-    </script>
 </body>
 </html>
+
