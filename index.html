@@ -31,7 +31,6 @@
             overflow: hidden;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 340px;
             background: var(--nemy-dark);
@@ -130,7 +129,6 @@
             margin-top: 10px;
         }
 
-        /* Layout Principal */
         .main-container {
             flex-grow: 1;
             display: grid;
@@ -187,7 +185,6 @@
             height: 65px;
         }
 
-        /* Bloco de Carreira Dinâmico */
         .career-card {
             background: #f8fafc;
             border: 1px solid var(--border-color);
@@ -301,7 +298,7 @@
         }
 
         .career-item-preview {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .career-title-prev {
@@ -365,9 +362,9 @@
 
             <div class="manual-box">
                 <h4>📖 Guia por Blocos</h4>
-                <p>• Adicione ou remova cargos individualmente.</p>
-                <p>• A edição reflete na hora na Página 1.</p>
-                <p>• Guia de Manuseio fixo na Página 2.</p>
+                <p>• O envio de PDF agora segrega os blocos automaticamente.</p>
+                <p>• Edite cada carreira de forma isolada.</p>
+                <p>• Acesse o site publicamente pelo link da Vercel.</p>
             </div>
         </div>
         <div class="sidebar-footer">
@@ -377,7 +374,6 @@
 
     <div class="main-container">
         
-        <!-- Editor por Blocos (Esquerda) -->
         <div class="editor-pane">
             <h2>Dados Pessoais</h2>
             <div class="form-group">
@@ -400,9 +396,8 @@
 
             <h2>Experiência Profissional (Por Blocos)</h2>
             <div id="career-blocks-container">
-                <!-- Bloco 1 Padrão -->
-                <div class="career-card" data-id="0">
-                    <button class="btn-remove" onclick="removeCareerBlock(0)">Remover</button>
+                <div class="career-card">
+                    <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
                     <div class="form-group">
                         <label>Cargo e Empresa</label>
                         <input type="text" class="form-control c-title" value="Analista Contábil | Grupo Oncoclínicas / Accenture" oninput="updateCV()">
@@ -413,22 +408,20 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-add" onclick="addCareerBlock()">+ Adicionar Nova Carreira</button>
+            <button class="btn-add" onclick="addCareerBlock('', '')">+ Adicionar Nova Carreira</button>
 
             <h2>Formação & Habilidades</h2>
             <div class="form-group">
-                <textarea id="input-education" class="form-control" oninput="updateCV()">• Ciências Contábeis - UNIBH | MBA Tributário (Cursando)
-• Sistemas: TOTVS, SAP, Alterdata, Questor, Sof.</textarea>
+                <textarea id="input-education" class="form-control" oninput="updateCV()">• Ciências Contábeis (Bacharelado) - UNIBH
+• MBA em Gestão e Planejamento Tributário (Cursando)</textarea>
             </div>
         </div>
 
-        <!-- Preview Revista (Direita) -->
         <div class="preview-pane">
             <div class="actions-bar">
                 <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Exportar Revista PDF</button>
             </div>
 
-            <!-- PÁGINA 1: Currículo por Blocos -->
             <div class="resume-sheet">
                 <div class="sheet-content">
                     <div class="cv-header">
@@ -444,21 +437,18 @@
 
                     <div>
                         <div class="cv-section-title">Experiência Profissional</div>
-                        <div id="cv-out-career" class="cv-text-content">
-                            <!-- Os blocos aparecem aqui dinamicamente -->
-                        </div>
+                        <div id="cv-out-career" class="cv-text-content"></div>
                     </div>
 
                     <div>
                         <div class="cv-section-title">Formação & Habilidades</div>
-                        <div id="cv-out-education" class="cv-text-content">• Ciências Contábeis - UNIBH | MBA Tributário (Cursando)
-• Sistemas: TOTVS, SAP, Alterdata, Questor, Sof.</div>
+                        <div id="cv-out-education" class="cv-text-content">• Ciências Contábeis (Bacharelado) - UNIBH
+• MBA em Gestão e Planejamento Tributário (Cursando)</div>
                     </div>
                 </div>
                 <div class="sheet-footer">Página 1 de 2</div>
             </div>
 
-            <!-- PÁGINA 2: Guia de Manuseio -->
             <div class="resume-sheet">
                 <div class="sheet-content">
                     <div class="cv-header">
@@ -467,10 +457,10 @@
                     </div>
 
                     <div class="manual-page-section">
-                        <h3>Como utilizar esta ferramenta por blocos</h3>
-                        <p><strong>1. Gestão de Carreira:</strong> Adicione múltiplos cargos clicando no botão de nova carreira. Cada bloco possui seu próprio campo de título e atividades.</p>
-                        <p><strong>2. Importação de PDF:</strong> Envie documentos para ler e extrair dados automaticamente[span_1](start_span)[span_1](end_span).</p>
-                        <p><strong>3. Exportação Oficial:</strong> Clique no botão superior para gerar o PDF formatado dentro das normas ABNT.</p>
+                        <h3>Como utilizar esta ferramenta</h3>
+                        <p><strong>1. Importação de PDF:</strong> Ao enviar seu currículo, o sistema tenta ler e criar blocos segregados de carreira automaticamente.</p>
+                        <p><strong>2. Edição por Blocos:</strong> Modifique ou adicione novas experiências de forma isolada e limpa.</p>
+                        <p><strong>3. Publicação Web:</strong> O projeto está hospedado e público na Vercel para acesso remoto imediato.</p>
                     </div>
 
                     <div class="manual-page-section">
@@ -487,16 +477,12 @@
     </div>
 
     <script>
-        let blockCounter = 1;
-
-        function addCareerBlock(title = "", desc = "") {
+        function addCareerBlock(title, desc) {
             const container = document.getElementById('career-blocks-container');
             const card = document.createElement('div');
             card.className = 'career-card';
-            card.setAttribute('data-id', blockCounter);
-            
             card.innerHTML = `
-                <button class="btn-remove" onclick="removeCareerBlock(${blockCounter})">Remover</button>
+                <button class="btn-remove" onclick="this.closest('.career-card').remove(); updateCV();">Remover</button>
                 <div class="form-group">
                     <label>Cargo e Empresa</label>
                     <input type="text" class="form-control c-title" value="${title}" placeholder="Ex: Analista Contábil | Empresa" oninput="updateCV()">
@@ -507,18 +493,7 @@
                 </div>
             `;
             container.appendChild(card);
-            blockCounter++;
             updateCV();
-        }
-
-        function removeCareerBlock(id) {
-            const cards = document.querySelectorAll('.career-card');
-            if (cards.length > 1) {
-                event.target.closest('.career-card').remove();
-                updateCV();
-            } else {
-                alert("Você deve manter pelo menos um bloco de carreira.");
-            }
         }
 
         function updateCV() {
@@ -528,7 +503,6 @@
             document.getElementById('cv-out-summary').innerText = document.getElementById('input-summary').value;
             document.getElementById('cv-out-education').innerText = document.getElementById('input-education').value;
 
-            // Coleta dinâmica dos blocos de carreira
             const careerContainer = document.getElementById('cv-out-career');
             careerContainer.innerHTML = "";
             const cards = document.querySelectorAll('.career-card');
@@ -562,14 +536,31 @@
                     fullText += pageText + "\n";
                 }
 
-                alert("PDF lido com sucesso! O texto principal foi carregado no primeiro bloco de carreira.");
-                document.querySelector('.c-desc').value = fullText.trim().substring(0, 400) + "...";
+                // Limpa o container anterior de blocos
+                document.getElementById('career-blocks-container').innerHTML = "";
+
+                // Tentativa de segmentação por blocos comuns (procurando palavras de cargo ou datas)
+                let chunks = fullText.split(/(?=Analista|Assistente|Contadora|Estagiária)/g);
+                
+                if (chunks.length > 1) {
+                    chunks.forEach(chunk => {
+                        if (chunk.trim().length > 20) {
+                            let lines = chunk.trim().split("\n");
+                            let title = lines[0] ? lines[0].substring(0, 60) : "Experiência Profissional";
+                            let desc = chunk.replace(title, "").trim().substring(0, 300);
+                            addCareerBlock(title, desc);
+                        }
+                    });
+                } else {
+                    addCareerBlock("Experiência Importada", fullText.trim().substring(0, 400));
+                }
+
                 updateCV();
+                alert("PDF importado e segregado por blocos com sucesso!");
             };
             reader.readAsArrayBuffer(file);
         }
 
-        // Executa a primeira atualização ao carregar
         updateCV();
     </script>
 </body>
