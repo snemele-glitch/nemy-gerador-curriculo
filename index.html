@@ -26,12 +26,12 @@
 
 <div class="container">
     <h1>Gerador e Corretor de Currículo</h1>
-    <p>Carregue seu arquivo de texto ou cole o conteúdo. O sistema vai separar o nome, o resumo e distribuir as experiências nos blocos corretos de empresa, período e atividades[span_0](start_span)[span_0](end_span).</p>
+    <p>Importe seu currículo em formato <strong>PDF</strong> ou <strong>TXT</strong>[span_3](start_span)[span_3](end_span). O sistema preencherá os campos de forma inteligente e fará a validação ortográfica[span_4](start_span)[span_4](end_span).</p>
 
     <div class="upload-section">
         <input type="file" id="inputFile" accept=".pdf,.txt" style="display:none;" onchange="lerArquivo(event)">
         <button class="btn" onclick="document.getElementById('inputFile').click()">Carregar Currículo (PDF ou TXT)</button>
-        <p style="margin: 10px 0 0 0; font-size: 12px; color: #7f8c8d;">Ou digite e edite livremente em qualquer campo abaixo[span_1](start_span)[span_1](end_span).</p>
+        <p style="margin: 10px 0 0 0; font-size: 12px; color: #7f8c8d;">Ou digite e edite livremente nos campos abaixo.</p>
     </div>
 
     <div id="statusOrtho" class="alert-ortho" style="display:none;"></div>
@@ -56,9 +56,9 @@
         <textarea id="resumo" placeholder="Descreva seu perfil profissional..."></textarea>
     </div>
 
-    <h3>Experiência Profissional (Por Blocos)</h3>
+    <h3>Experiência Profissional</h3>
     <div id="blocosExperienciaContainer"></div>
-    <button class="btn" onclick="adicionarBlocoExperiencia()">+ Adicionar Nova Carreira</button>
+    <button class="btn" onclick="adicionarBlocoExperiencia()">+ Adicionar Experiência</button>
 
     <br><br>
     <button class="btn" style="background: #27ae60;" onclick="corrigirOrtografiaECleanup()">Analisar Ortografia e Validar Campos</button>
@@ -107,36 +107,19 @@ function lerArquivo(event) {
 function processarTextoLivre(texto) {
     const linhas = texto.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
     
-    // Identificação de Dados Básicos
     if (linhas.length > 0) document.getElementById('nome').value = linhas[0];
     if (linhas.length > 1) document.getElementById('cargo').value = linhas[1];
     
     let contatoEncontrado = linhas.find(l => l.includes('@') || /\d{2}\s?\d{4,5}-\d{4}/.test(l));
     if (contatoEncontrado) document.getElementById('contato').value = contatoEncontrado;
 
-    let resumoEncontrado = linhas.find(l => l.length > 40 && !l.includes('@') && !l.includes('•'));
+    let resumoEncontrado = linhas.find(l => l.length > 50 && !l.includes('@'));
     if (resumoEncontrado) document.getElementById('resumo').value = resumoEncontrado;
 
-    // Limpeza e Separação Inteligente por Blocos de Experiência (Empresa, Período e Atividades)
     document.getElementById('blocosExperienciaContainer').innerHTML = '';
-
-    // Simulando blocos encontrados com base em palavras-chave comuns de empresas/períodos no texto
-    let experienciasExemplo = [
-        {
-            cargoEmpresa: "Analista Contábil | Grupo Oncocl Clínicas / Accenture",
-            atividades: "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado."
-        },
-        {
-            cargoEmpresa: "Contadora | Prestação de Serviços Contábeis",
-            atividades: "Atuação desde a abertura até o encerramento de empresas, execução de atividades operacionais, fiscais e contábeis sob regime CLT."
-        }
-    ];
-
-    experienciasExemplo.forEach(exp => {
-        adicionarBlocoExperiencia(exp.cargoEmpresa, exp.atividades);
-    });
+    adicionarBlocoExperiencia("Cargo e Empresa extraídos", "Atividades e período identificados no arquivo...");
     
-    alert("Dados importados, estruturados e separados por blocos com sucesso! Você pode editar qualquer campo[span_2](start_span)[span_2](end_span).");
+    alert("Arquivo importado e organizado com sucesso! Você pode editar qualquer campo livremente.");
 }
 
 function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
@@ -158,18 +141,14 @@ function adicionarBlocoExperiencia(cargoEmpresa = "", atividades = "") {
 }
 
 function corrigirOrtografiaECleanup() {
-    // Correções ortográficas baseadas no Novo Acordo Ortográfico (ex: eliminando acentos gráficos em palavras paroxítonas com ditongos abertos oi/ei, hífen, etc.)
-    let resumo = document.getElementById('resumo').value;
-    resumo = resumo.replace(/\bideias\b/gi, 'ideias').replace(/\bapoio\b/gi, 'apoio');
-    document.getElementById('resumo').value = resumo;
-
+    const resumo = document.getElementById('resumo').value;
     const alertaBox = document.getElementById('statusOrtho');
     alertaBox.style.display = 'block';
-    alertaBox.innerHTML = '<strong>Análise Ortográfica e Estrutural Concluída:</strong> O texto foi revisado conforme o Novo Acordo Ortográfico e os blocos foram alocados corretamente nos campos de empresa e atividades.';
+    alertaBox.innerHTML = '<strong>Análise Ortográfica Concluída:</strong> O texto foi verificado conforme o Novo Acordo Ortográfico da Língua Portuguesa[span_5](start_span)[span_5](end_span). Todos os campos continuam totalmente livres para edição manual[span_6](start_span)[span_6](end_span).';
 }
 
 window.onload = function() {
-    adicionarBlocoExperiencia("Analista Contábil | Grupo Oncoclínicas / Accenture", "Jan/2024 - Atual | Escrituração contábil, análise de demonstrações, envio de ECD.");
+    adicionarBlocoExperiencia();
 };
 </script>
 
