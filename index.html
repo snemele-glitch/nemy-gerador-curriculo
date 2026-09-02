@@ -3,478 +3,417 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nemy - Revista Interativa & Currículo por Blocos</title>
-    <!-- Biblioteca PDF.js para extração de dados do seu PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <title>Nemele Silva | Contabilidade</title>
     <style>
         :root {
-            --nemy-pink: #db2777;
-            --nemy-pink-light: #fce7f3;
-            --nemy-dark: #1e1b4b;
-            --bg-dashboard: #f8fafc;
+            --primary: #1e3a8a;
+            --secondary: #0d9488;
+            --accent: #f59e0b;
+            --bg-color: #f8fafc;
+            --text-color: #334155;
             --card-bg: #ffffff;
-            --text-main: #000000;
-            --border-color: #cbd5e1;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg-dashboard);
-            color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-
-        /* Menu Lateral */
-        .sidebar {
-            width: 360px;
-            background: var(--nemy-dark);
+        
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
             color: white;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .brand-logo {
-            background: var(--nemy-pink);
-            color: white;
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .brand-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
-
-        .brand-name span { color: var(--nemy-pink); }
-
-        .import-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(219, 39, 119, 0.5);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 3rem 2rem;
             text-align: center;
-            margin-bottom: 20px;
         }
-
-        .import-box label {
-            font-size: 0.9rem;
-            color: #fce7f3;
-            cursor: pointer;
-            display: block;
-            margin-bottom: 10px;
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
         }
-
-        .import-box input { display: none; }
-
-        .btn-upload {
-            background: var(--nemy-pink);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-
-        .btn-upload:hover { background: #be185d; }
-
-        .manual-box {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 0.8rem;
-            line-height: 1.4;
-            color: #cbd5e1;
-        }
-
-        .manual-box h4 { color: var(--nemy-pink-light); margin-bottom: 6px; }
-        .manual-box p { margin-bottom: 4px; }
-
-        .sidebar-footer {
-            font-size: 0.75rem;
-            color: #64748b;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            margin-top: auto;
-        }
-
-        /* Painel Principal */
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .header-bar {
-            background: var(--card-bg);
-            padding: 15px 25px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-bar h1 { font-size: 1.3rem; color: var(--nemy-dark); }
-
-        .editor-pane {
-            flex-grow: 1;
-            background: var(--card-bg);
-            padding: 25px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .editor-pane h2 {
+        
+        header p {
             font-size: 1.1rem;
-            color: var(--nemy-dark);
-            border-bottom: 2px solid var(--nemy-pink-light);
-            padding-bottom: 5px;
-            margin-top: 10px;
+            color: #94a3b8;
+            margin-bottom: 1rem;
         }
-
-        .form-group { margin-bottom: 10px; }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
             font-size: 0.85rem;
-            outline: none;
-            transition: border-color 0.2s;
+            font-weight: 600;
+            margin: 0.2rem;
         }
-
-        .form-control:focus { border-color: var(--nemy-pink); }
-
-        textarea.form-control {
-            resize: vertical;
-            height: 60px;
-            font-family: inherit;
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
         }
-
-        /* Estrutura Segregada do Bloco de Carreira com Datas Customizadas */
-        .career-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
+        
+        .contact-info a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact-info a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: -1rem auto 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .timeline-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1.2rem;
+            border-left: 2px solid #cbd5e1;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 10px;
         }
-
-        .career-grid-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 5px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
         }
-
-        .date-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            align-items: center;
-            background: #f1f5f9;
-            padding: 8px;
-            border-radius: 6px;
+        
+        .timeline-item h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
         }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-remove {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            font-weight: bold;
-            align-self: flex-end;
-        }
-        .btn-remove:hover { background: #b91c1c; }
-
-        .btn-add {
-            background: var(--nemy-dark);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+        
+        .timeline-item span {
             font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 5px;
-            width: fit-content;
+            color: #64748b;
+            display: block;
+            margin-bottom: 0.4rem;
         }
-        .btn-add:hover { background: #312e81; }
+        
+        ul {
+            padding-left: 1.2rem;
+        }
+        
+        li {
+            margin-bottom: 0.3rem;
+        }
+        
+        .download-box {
+            background: #eff6ff;
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .download-btn:hover {
+            background-color: #1e40af;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
 
         @media print {
-            body { background: white; display: block; height: auto; }
-            .sidebar, .header-bar, .btn-add, .btn-remove, .btn-upload, .import-box { display: none !important; }
-            .editor-pane { display: block; border: none; padding: 0; overflow: visible; }
+            .download-box, header {
+                display: none !important;
+            }
+            body {
+                background-color: #fff;
+                color: #000;
+            }
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin-bottom: 0.5rem;
+            }
+            h2 {
+                border-bottom: none;
+                font-size: 1.2rem;
+                margin-bottom: 0.2rem;
+            }
+            .timeline-item {
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
+    <header>
+        <h1>Nemele Silva</h1>
+        <p>Contadora</p>
         <div>
-            <div class="brand-container">
-                <div class="brand-logo">N</div>
-                <div class="brand-name">NEMY<span>.</span> REVISTA CV</div>
-            </div>
-            
-            <div class="import-box">
-                <label>Carregar Currículo (PDF)</label>
-                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF do Currículo</label>
-                <input type="file" id="cv-file-input" accept=".pdf" onchange="lerArquivoPDF(event)">
-            </div>
-
-            <div class="manual-box">
-                <h4>📖 Guia de Automação</h4>
-                <p>• Suporte total para importação automática do seu PDF[span_1](start_span)[span_1](end_span).</p>
-                <p>• Controle detalhado: Mês/Ano de Início, Fim e opção <strong>"Trabalhando Atualmente"</strong>.</p>
-                <p>• Segregação exata em Cargo, Empresa e Atividades.</p>
-            </div>
+            <span class="badge">CRC Ativo</span>
+            <span class="badge">Santa Luzia, MG</span>
         </div>
-        <div class="sidebar-footer">
-            <p>Nemy Hub v3.5 • Automação Profissional</p>
+        <div class="contact-info">
+            <span>📧 <a href="mailto:snemele@gmail.com">snemele@gmail.com</a></span>
+            <span>📱 <a href="https://wa.me/5531995585533" target="_blank">WhatsApp: (31) 99558-5533</a></span>
+            <span>🔗 <a href="https://www.linkedin.com/in/nemele-s-4a6880149" target="_blank">LinkedIn</a></span>
         </div>
-    </aside>
+    </header>
 
-    <main class="main-container">
-        <header class="header-bar">
-            <h1>Construtor de Currículo Inteligente</h1>
-            <button class="btn-upload" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
-        </header>
+    <div class="container">
         
-        <div class="editor-pane">
-            <h2>Dados Pessoais</h2>
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="input-name" class="form-control" value="Nemele Silva">
-            </div>
-            <div class="form-group">
-                <label>Cargo / Profissão</label>
-                <input type="text" id="input-role" class="form-control" value="Contadora • CRC Ativo">
-            </div>
-            <div class="form-group">
-                <label>Contato & Local</label>
-                <input type="text" id="input-contact" class="form-control" value="snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG">
-            </div>
-
+        <!-- Resumo Profissional -->
+        <div class="card">
             <h2>Resumo Profissional</h2>
-            <div class="form-group">
-                <textarea id="input-summary" class="form-control">Contadora com ampla experiência em escrituração, conciliação e obrigações acessórias (ECD, EFD, PGDAS), atuando sob rigor técnico e normas contábeis vigentes.</textarea>
-            </div>
-
-            <h2>Experiência Profissional (Segregada por Blocos)</h2>
-            <div id="career-blocks-container">
-                <!-- Bloco Inicial Baseado no Seu Currículo -->
-                <div class="career-card">
-                    <button class="btn-remove" onclick="this.closest('.career-card').remove()">Remover Bloco</button>
-                    <div class="career-grid-row">
-                        <div class="form-group">
-                            <label>Cargo</label>
-                            <input type="text" class="form-control c-cargo" value="Analista Contábil">
-                        </div>
-                        <div class="form-group">
-                            <label>Empresa</label>
-                            <input type="text" class="form-control c-empresa" value="Grupo Oncoclínicas / Accenture">
-                        </div>
-                    </div>
-                    <div class="date-row">
-                        <div class="form-group" style="margin:0;">
-                            <label>Início (Mês / Ano)</label>
-                            <input type="text" class="form-control c-inicio" value="Janeiro de 2024">
-                        </div>
-                        <div class="form-group" style="margin:0;">
-                            <label>Fim (Mês / Ano)</label>
-                            <input type="text" class="form-control c-fim" value="Atual" disabled>
-                        </div>
-                        <div class="form-group" style="margin:0; display: flex; align-items: flex-end; height: 100%;">
-                            <label class="checkbox-container">
-                                <input type="checkbox" class="c-atual" checked onchange="toggleAtual(this)"> Trabalhando Atualmente
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 5px;">
-                        <label>Descrição das Atividades</label>
-                        <textarea class="form-control c-desc">Escrituração contábil; Análise e interpretação de demonstrações contábeis; Cadastro e manutenção de contas contábeis; Envio ECD; Apoio à auditoria e controladoria.</textarea>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-add" onclick="addCareerBlock('', '', '', '', '', true)">+ Adicionar Nova Carreira</button>
+            <p>Sou Contadora com experiência comprovada na prestação de serviços contábeis, atuando desde a abertura até o encerramento de empresas, além da execução de atividades operacionais e fiscais. Atualmente, exerço funções na área contábil sob regime CLT, mas busco realocação profissional devido à mudança de endereço da empresa atual.</p>
+            <p style="margin-top: 0.8rem;">Possuo experiência na transmissão de obrigações acessórias mensais, anuais e periódicas junto a órgãos públicos e privados, além de sólida habilidade em conciliação contábil dentro dos períodos vigentes e retroativos, conforme os princípios e normas contábeis.</p>
         </div>
-    </main>
 
-    <script>
-        // Configuração do motor PDF.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        <!-- Experiência Profissional -->
+        <div class="card">
+            <h2>Experiência Profissional</h2>
+            
+            <div class="timeline-item">
+                <h3>Analista Contabil</h3>
+                <span>Grupo Oncoclínicas/Accenture - Belo Horizonte, MG | janeiro de 2024 a Data Atual</span>
+                <ul>
+                    <li>Escrituração contábil; Análise e interpretação de demonstrações contábeis;</li>
+                    <li>Cadastro e manutenção de contas contábeis conforme o plano preferencial ECD e políticas internas da empresa;</li>
+                    <li>Envio ECD;</li>
+                    <li>Apoio à auditoria e controladoria, organizando documentos e esclarecendo procedimentos técnicos com precisão;</li>
+                    <li>Participação/elaboração no fechamento das demonstrações financeiras;</li>
+                    <li>Controle e conciliação de mútuos, incluindo cálculo e lançamento de juros e IOF;</li>
+                    <li>Controle e conciliação das contas patrimoniais e resultado;</li>
+                    <li>Desenvolvimento de fluxogramas de processos e suporte na automatização de rotinas contábeis;</li>
+                    <li>Elaborar manuais de treinamento de colaboradores;</li>
+                    <li>Colaboração direta com a controladoria na análise de variações de resultado e proposição de melhorias.</li>
+                </ul>
+            </div>
 
-        function toggleAtual(checkbox) {
-            const card = checkbox.closest('.career-card');
-            const inputFim = card.querySelector('.c-fim');
-            if (checkbox.checked) {
-                inputFim.value = "Atual";
-                inputFim.disabled = true;
-            } else {
-                inputFim.value = "";
-                inputFim.disabled = false;
-            }
-        }
+            <div class="timeline-item">
+                <h3>Analista Contábil</h3>
+                <span>STREAMLINED - Belo Horizonte, MG | dezembro de 2022 a novembro de 2023</span>
+                <ul>
+                    <li>Organização e conferência de documentos físicos e digitais para realização da escrituração contábil no sistema;</li>
+                    <li>Encerramento de balancetes mensais e trimestrais de empresas do Lucro Presumido, Lucro Real e Simples Nacional;</li>
+                    <li>Execução completa da escrituração contábil e apoio na apuração de tributos (PIS, COFINS, ICMS) e retenções na fonte;</li>
+                    <li>Colaboração com o setor fiscal na apuração de impostos de empresas optantes pelo Lucro Presumido e Lucro Real;</li>
+                    <li>Atendimento às demandas de auditoria interna e externa, fornecendo informações e esclarecimentos técnicos;</li>
+                    <li>Análise de tributos diretos e indiretos, assegurando conformidade com a legislação vigente;</li>
+                    <li>Transmissão de obrigações acessórias como ECD e EFD, garantindo prazos e integridade das informações contábeis.</li>
+                </ul>
+            </div>
 
-        function addCareerBlock(cargo, empresa, inicio, fim, desc, isAtual) {
-            const container = document.getElementById('career-blocks-container');
-            const card = document.createElement('div');
-            card.className = 'career-card';
-            card.innerHTML = `
-                <button class="btn-remove" onclick="this.closest('.career-card').remove()">Remover Bloco</button>
-                <div class="career-grid-row">
-                    <div class="form-group">
-                        <label>Cargo</label>
-                        <input type="text" class="form-control c-cargo" value="${cargo || ''}" placeholder="Ex: Analista Contábil">
-                    </div>
-                    <div class="form-group">
-                        <label>Empresa</label>
-                        <input type="text" class="form-control c-empresa" value="${empresa || ''}" placeholder="Ex: Empresa ABC">
-                    </div>
+            <div class="timeline-item">
+                <h3>Assistente de Auditoria</h3>
+                <span>Batista & Associados - Belo Horizonte, MG | agosto de 2022 a setembro de 2023</span>
+                <ul>
+                    <li>Conciliava as contas patrimoniais;</li>
+                    <li>Executava o teste de auditoria nas contas dos fornecedores e clientes;</li>
+                    <li>Executava abertura de empresa e alteração contratual por meio da Junta comercial e OAB;</li>
+                    <li>Efetuava a escrituração contábil das empresas optante do lucro presumido e simples nacional;</li>
+                    <li>Apurava o calculo da variação cambial;</li>
+                    <li>Emitia notas fiscais de serviços;</li>
+                    <li>Emitia as guias do DAS e DARF;</li>
+                    <li>Transmitia obrigação acessória ICMS IPI;</li>
+                    <li>Auxiliava o setor de Pericia em analisar contrato e processos judiciais;</li>
+                    <li>Lançamentos variação cambial.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Contadora</h3>
+                <span>MONYER LTDa - Belo Horizonte, MG | agosto de 2021 a agosto de 2022</span>
+                <ul>
+                    <li>Responsável pela abertura da empresa e alteração contratual;</li>
+                    <li>Escrituração contábil;</li>
+                    <li>Emitia nota fiscal de serviço;</li>
+                    <li>Encerrava o balancete;</li>
+                    <li>Elaboração cálculos para emissão da guia;</li>
+                    <li>Transmitia a declaração do simples Nacional.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Assistente Contábil</h3>
+                <span>Marumbeni Brasil - Belo Horizonte, MG | agosto de 2021 a agosto de 2022</span>
+                <ul>
+                    <li>Emitia nota fiscal nacional;</li>
+                    <li>Lançamentos variação cambial;</li>
+                    <li>Apurava ICMS ST, ICMS interno e interestadual anexo IV Auto Peças;</li>
+                    <li>Apurava o imposto federal, estadual e municipal;</li>
+                    <li>Apurava créditos presumido de acordo regime especial;</li>
+                    <li>Controlava contabilmente o estoque de mercadorias em trânsito e nacional peças máquinas pesadas;</li>
+                    <li>Lançamentos contábil no SAP (english);</li>
+                    <li>Preparo documentos para auditoria externa e envio para Contabilidade externa;</li>
+                    <li>Classificação fiscal (NCM);</li>
+                    <li>Participava do processo implantação do sistema.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Contadora- Analista fiscal</h3>
+                <span>Indústria comércio - Nova Lima, MG | maio de 2021 a agosto de 2021</span>
+                <ul>
+                    <li>Fazia conferência em apurar impostos de acordo com CNAE, Regime optante e o destino do produto ou prestação de serviço dos clientes;</li>
+                    <li>Realizava conferências de notas fiscais analisando NCM, CFOP e classificação fiscal;</li>
+                    <li>Auxiliava o setor do estoque quando necessário elaborar notas fiscais de importação;</li>
+                    <li>Preparava o arquivo SPED e encaminhar para o setor contábil interno para validação;</li>
+                    <li>Classificando as NCM conforme produto (matéria prima, insumo e outros), tabela TIPI, CAMEX;</li>
+                    <li>Acompanhamento das notas fiscais de importação express (invoice);</li>
+                    <li>Elaboro o plano de contas;</li>
+                    <li>Auxiliava setor financeiro e contábil na tomada de decisão.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Assistente Financeiro (Temporário)</h3>
+                <span>Robert Half - Belo Horizonte, MG | setembro de 2019 a novembro de 2020</span>
+                <ul>
+                    <li>Organizava e regularizava as pendências do setor financeiro e contábil;</li>
+                    <li>Conciliava as contas bancárias;</li>
+                    <li>Escrituração contábil;</li>
+                    <li>Analisava e Lançava as notas fiscais no sistema contábil e financeiro;</li>
+                    <li>Controlava as despesas pendentes através das planilhas;</li>
+                    <li>Análise CFOP e impostos federais, estaduais e municipais.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Assistente técnica sistema de gestão pública</h3>
+                <span>SIGMIX TECNOLOGIA INFORMAÇÃO - Belo Horizonte, MG | junho de 2016 a agosto de 2019</span>
+                <ul>
+                    <li>Auxiliava na consultoria sobre contabilidade pública e comercial para servidores públicos e contadores câmaras, SAAE e prefeitura;</li>
+                    <li>Transmitia quando necessário o envio do LDO, LOA e PPA no site do SICOM;</li>
+                    <li>Analisava e acompanhava as mudanças dos recursos ordinário, código de receitas, despesas e suas permissões conforme o site do SICOM e Lei;</li>
+                    <li>Encerramento de balanços;</li>
+                    <li>Validava os acompanhamentos mensal e balancetes conforme atualização das tabelas;</li>
+                    <li>Implantava o sistema financeiro, lançava as contas a receber e a pagar;</li>
+                    <li>Implantação do sistema contábil para entidades do terceiro setor (plano de contas, orçamento, saldo bancário, cadastro em gerais, parametrização);</li>
+                    <li>Conferência de notas fiscais quando necessária;</li>
+                    <li>Conciliação as contas bancárias;</li>
+                    <li>Realizava atendimento para o setor financeiro e contábil;</li>
+                    <li>Ministrava alguns cursos internos para novos funcionários sobre o sistema da empresa e os processos do empenho, liquidação e restos a pagar.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Assistente técnica de gestão pública</h3>
+                <span>Mérito Contabilidade ME | novembro de 2015 a junho de 2016</span>
+                <ul>
+                    <li>Elaborava fluxo de caixa;</li>
+                    <li>Conciliava as contas bancária;</li>
+                    <li>Lançamento contábil;</li>
+                    <li>Encerramento de balanços;</li>
+                    <li>Emissão de notas fiscais;</li>
+                    <li>Elaboração de planilhas para setor gerencial;</li>
+                    <li>Participação do projeto de auditoria em averiguar os extratos bancários e análise dos sistemas;</li>
+                    <li>Participação em auditoria em Carangola MG averiguando as notas fiscais e seus tributos.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Estagiária de contabilidade</h3>
+                <span>BHTRANS | novembro de 2014 a novembro de 2015</span>
+                <ul>
+                    <li>Conciliação bancária;</li>
+                    <li>Lançamento contábil no sistema da TOTSTV (DATASUL);</li>
+                    <li>Controlava a entrada e saída de nota fiscal;</li>
+                    <li>Emissão de notas fiscais, guias de impostos; federais, municipais e estaduais;</li>
+                    <li>Auxiliava na elaboração de empenho, liquidação e o pagamento;</li>
+                    <li>Elaboração de planilhas.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Escolaridade & Competências -->
+        <div class="card">
+            <h2>Escolaridade & Habilidades</h2>
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.1rem;">Escolaridade</h3>
+                    <ul>
+                        <li><strong>Ciências Contábeis (Bacharelado):</strong> UNIBH - Belo Horizonte, MG (fevereiro de 2012 a dezembro de 2016).</li>
+                        <li><strong>Reforma tributária (Pós-Graduação):</strong> Contabilidade Facilitada (novembro de 2025 a junho de 2026).</li>
+                    </ul>
                 </div>
-                <div class="date-row">
-                    <div class="form-group" style="margin:0;">
-                        <label>Início (Mês / Ano)</label>
-                        <input type="text" class="form-control c-inicio" value="${inicio || ''}" placeholder="Ex: Janeiro de 2022">
-                    </div>
-                    <div class="form-group" style="margin:0;">
-                        <label>Fim (Mês / Ano)</label>
-                        <input type="text" class="form-control c-fim" value="${isAtual ? 'Atual' : (fim || '')}" ${isAtual ? 'disabled' : ''} placeholder="Ex: Novembro de 2023">
-                    </div>
-                    <div class="form-group" style="margin:0; display: flex; align-items: flex-end; height: 100%;">
-                        <label class="checkbox-container">
-                            <input type="checkbox" class="c-atual" ${isAtual ? 'checked' : ''} onchange="toggleAtual(this)"> Trabalhando Atualmente
-                        </label>
-                    </div>
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.1rem;">Habilidades e Informações Adicionais</h3>
+                    <ul>
+                        <li><strong>Competências:</strong> Contabilidade fiscal, Contabilidade.</li>
+                        <li><strong>Idiomas:</strong> Cursando Inglês.</li>
+                        <li><strong>Programas:</strong> DES, DARF, DIRF, SINTEGRA, ECD, EFD Fiscal e PGDAS.</li>
+                        <li><strong>Sistemas:</strong> TOTSTV, Alterdada, SOF, ECASP, PAGHIPER, GESTAOCLIK, QUESTOR.</li>
+                        <li><strong>Outros:</strong> Curso de Tesouraria e informática; emissão de boletos via Bradesco e Gestaoclik.</li>
+                    </ul>
                 </div>
-                <div class="form-group" style="margin-top: 5px;">
-                    <label>Descrição das Atividades</label>
-                    <textarea class="form-control c-desc" placeholder="Detalhes das tarefas...">${desc || ''}</textarea>
-                </div>
-            `;
-            container.appendChild(card);
-        }
+            </div>
+        </div>
 
-        // Leitor e extrator de PDF otimizado para o seu padrão de currículo
-        function lerArquivoPDF(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        <!-- Caixa de Opções para o Recrutador baixar em PDF -->
+        <div class="download-box card">
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">📥 Opções para Recrutadores</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Você pode visualizar o currículo completo acima ou extraí-lo instantaneamente em PDF:</p>
+            <a href="Curriculo_Nemele_Silva.pdf" download class="download-btn">📄 Baixar Currículo Oficial em PDF</a>
+            <button onclick="window.print()" class="download-btn" style="background-color: var(--secondary); margin-left: 10px; border: none; cursor: pointer;">🖨️ Salvar Página como PDF</button>
+        </div>
 
-            const reader = new FileReader();
-            reader.onload = async function() {
-                const typedarray = new Uint8Array(this.result);
-                try {
-                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    let fullText = "";
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const textContent = await page.getTextContent();
-                        fullText += textContent.items.map(item => item.str).join(" ") + "\n";
-                    }
-                    processarTextoPDF(fullText);
-                } catch (err) {
-                    alert("Erro ao ler o arquivo PDF. Verifique se o arquivo é válido.");
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
+    </div>
 
-        function processarTextoPDF(texto) {
-            // Preenchimento dos dados básicos do topo
-            if (texto.includes("Nemele Silva")) {
-                document.getElementById('input-name').value = "Nemele Silva";
-            }
-            if (texto.includes("snemele@gmail.com")) {
-                document.getElementById('input-contact').value = "snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG";
-            }
+    <footer>
+        <p>&copy; 2026 Nemele Silva. Todos os direitos reservados.</p>
+    </footer>
 
-            // Extração de blocos dinâmicos baseados nas empresas do seu currículo
-            document.getElementById('career-blocks-container').innerHTML = "";
-
-            // Inserindo os blocos organizados com base na estrutura real do seu arquivo
-            addCareerBlock(
-                "Analista Contábil", 
-                "Grupo Oncoclínicas / Accenture", 
-                "janeiro de 2024", 
-                "Atual", 
-                "• Escrituração contábil; Análise e interpretação de demonstrações contábeis; • Cadastro e manutenção de contas contábeis conforme o plano preferencial ECD; Envio ECD; Apoio à auditoria e controladoria.", 
-                true
-            );
-
-            addCareerBlock(
-                "Analista Contábil", 
-                "STREAMLINED", 
-                "dezembro de 2022", 
-                "novembro de 2023", 
-                "Organização e conferência de documentos físicos e digitais para realização da escrituração contábil no sistema; • Encerramento de balancetes mensais e trimestrais de empresas do Lucro Presumido, Lucro Real e Simples Nacional.", 
-                false
-            );
-
-            addCareerBlock(
-                "Assistente de Auditoria", 
-                "Batista & Associados", 
-                "agosto de 2022", 
-                "setembro de 2023", 
-                "Conciliava as contas patrimoniais; Executava o teste de auditoria nas contas dos fornecedores e clientes; Executava abertura de empresa e alteração contratual.", 
-                false
-            );
-
-            alert("PDF lido e estruturado com sucesso! Os campos foram alocados nos blocos corretos com datas e opções de trabalho atual.");
-        }
-    </script>
 </body>
 </html>
+
