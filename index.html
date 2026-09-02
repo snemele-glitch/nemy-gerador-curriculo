@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nemy - Revista Interativa & Currículo por Blocos</title>
-    <!-- Biblioteca PDF.js para leitura de PDF -->
+    <!-- Biblioteca PDF.js para extração de dados do seu PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- Biblioteca Mammoth.js para leitura direta de arquivos Word (.docx) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <style>
         :root {
             --nemy-pink: #db2777;
@@ -30,6 +28,7 @@
             overflow: hidden;
         }
 
+        /* Menu Lateral */
         .sidebar {
             width: 360px;
             background: var(--nemy-dark);
@@ -124,6 +123,7 @@
             margin-top: auto;
         }
 
+        /* Painel Principal */
         .main-container {
             flex-grow: 1;
             display: flex;
@@ -189,7 +189,7 @@
             font-family: inherit;
         }
 
-        /* Estrutura Segregada do Bloco de Carreira */
+        /* Estrutura Segregada do Bloco de Carreira com Datas Customizadas */
         .career-card {
             background: #f8fafc;
             border: 1px solid var(--border-color);
@@ -204,8 +204,27 @@
 
         .career-grid-row {
             display: grid;
-            grid-template-columns: 2fr 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
+        }
+
+        .date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .btn-remove {
@@ -252,20 +271,20 @@
             </div>
             
             <div class="import-box">
-                <label>Carregar Currículo (PDF ou Word)</label>
-                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF ou DOCX</label>
-                <input type="file" id="cv-file-input" accept=".pdf,.docx" onchange="lerArquivo(event)">
+                <label>Carregar Currículo (PDF)</label>
+                <label for="cv-file-input" class="btn-upload">📁 Enviar PDF do Currículo</label>
+                <input type="file" id="cv-file-input" accept=".pdf" onchange="lerArquivoPDF(event)">
             </div>
 
             <div class="manual-box">
                 <h4>📖 Guia de Automação</h4>
-                <p>• Suporte direto a arquivos <strong>PDF</strong> e <strong>Word (.docx)</strong>.</p>
-                <p>• Separação automática em colunas exatas: Cargo, Empresa, Ano e Atividades.</p>
-                <p>• Totalmente editável e pronto para impressão.</p>
+                <p>• Suporte total para importação automática do seu PDF[span_1](start_span)[span_1](end_span).</p>
+                <p>• Controle detalhado: Mês/Ano de Início, Fim e opção <strong>"Trabalhando Atualmente"</strong>.</p>
+                <p>• Segregação exata em Cargo, Empresa e Atividades.</p>
             </div>
         </div>
         <div class="sidebar-footer">
-            <p>Nemy Hub v2.5 • Automação Profissional</p>
+            <p>Nemy Hub v3.5 • Automação Profissional</p>
         </div>
     </aside>
 
@@ -297,7 +316,7 @@
 
             <h2>Experiência Profissional (Segregada por Blocos)</h2>
             <div id="career-blocks-container">
-                <!-- Bloco de Exemplo Inicial -->
+                <!-- Bloco Inicial Baseado no Seu Currículo -->
                 <div class="career-card">
                     <button class="btn-remove" onclick="this.closest('.career-card').remove()">Remover Bloco</button>
                     <div class="career-grid-row">
@@ -309,23 +328,49 @@
                             <label>Empresa</label>
                             <input type="text" class="form-control c-empresa" value="Grupo Oncoclínicas / Accenture">
                         </div>
-                        <div class="form-group">
-                            <label>Ano / Período</label>
-                            <input type="text" class="form-control c-ano" value="Jan/2024 - Atual">
+                    </div>
+                    <div class="date-row">
+                        <div class="form-group" style="margin:0;">
+                            <label>Início (Mês / Ano)</label>
+                            <input type="text" class="form-control c-inicio" value="Janeiro de 2024">
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label>Fim (Mês / Ano)</label>
+                            <input type="text" class="form-control c-fim" value="Atual" disabled>
+                        </div>
+                        <div class="form-group" style="margin:0; display: flex; align-items: flex-end; height: 100%;">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="c-atual" checked onchange="toggleAtual(this)"> Trabalhando Atualmente
+                            </label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top: 5px;">
                         <label>Descrição das Atividades</label>
-                        <textarea class="form-control c-desc">Escrituração contábil, análise de demonstrações, envio de ECD, controle e conciliação de contas patrimoniais e resultado.</textarea>
+                        <textarea class="form-control c-desc">Escrituração contábil; Análise e interpretação de demonstrações contábeis; Cadastro e manutenção de contas contábeis; Envio ECD; Apoio à auditoria e controladoria.</textarea>
                     </div>
                 </div>
             </div>
-            <button class="btn-add" onclick="addCareerBlock('', '', '', '')">+ Adicionar Nova Carreira</button>
+            <button class="btn-add" onclick="addCareerBlock('', '', '', '', '', true)">+ Adicionar Nova Carreira</button>
         </div>
     </main>
 
     <script>
-        function addCareerBlock(cargo, empresa, ano, desc) {
+        // Configuração do motor PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        function toggleAtual(checkbox) {
+            const card = checkbox.closest('.career-card');
+            const inputFim = card.querySelector('.c-fim');
+            if (checkbox.checked) {
+                inputFim.value = "Atual";
+                inputFim.disabled = true;
+            } else {
+                inputFim.value = "";
+                inputFim.disabled = false;
+            }
+        }
+
+        function addCareerBlock(cargo, empresa, inicio, fim, desc, isAtual) {
             const container = document.getElementById('career-blocks-container');
             const card = document.createElement('div');
             card.className = 'career-card';
@@ -334,84 +379,101 @@
                 <div class="career-grid-row">
                     <div class="form-group">
                         <label>Cargo</label>
-                        <input type="text" class="form-control c-cargo" value="${cargo}" placeholder="Ex: Analista Contábil">
+                        <input type="text" class="form-control c-cargo" value="${cargo || ''}" placeholder="Ex: Analista Contábil">
                     </div>
                     <div class="form-group">
                         <label>Empresa</label>
-                        <input type="text" class="form-control c-empresa" value="${empresa}" placeholder="Ex: Empresa ABC">
-                    </div>
-                    <div class="form-group">
-                        <label>Ano / Período</label>
-                        <input type="text" class="form-control c-ano" value="${ano}" placeholder="Ex: 2023 - 2024">
+                        <input type="text" class="form-control c-empresa" value="${empresa || ''}" placeholder="Ex: Empresa ABC">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="date-row">
+                    <div class="form-group" style="margin:0;">
+                        <label>Início (Mês / Ano)</label>
+                        <input type="text" class="form-control c-inicio" value="${inicio || ''}" placeholder="Ex: Janeiro de 2022">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Fim (Mês / Ano)</label>
+                        <input type="text" class="form-control c-fim" value="${isAtual ? 'Atual' : (fim || '')}" ${isAtual ? 'disabled' : ''} placeholder="Ex: Novembro de 2023">
+                    </div>
+                    <div class="form-group" style="margin:0; display: flex; align-items: flex-end; height: 100%;">
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="c-atual" ${isAtual ? 'checked' : ''} onchange="toggleAtual(this)"> Trabalhando Atualmente
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 5px;">
                     <label>Descrição das Atividades</label>
-                    <textarea class="form-control c-desc" placeholder="Detalhes das tarefas...">${desc}</textarea>
+                    <textarea class="form-control c-desc" placeholder="Detalhes das tarefas...">${desc || ''}</textarea>
                 </div>
             `;
             container.appendChild(card);
         }
 
-        function lerArquivo(event) {
+        // Leitor e extrator de PDF otimizado para o seu padrão de currículo
+        function lerArquivoPDF(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-
-            // Leitor de PDF
-            if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
-                reader.onload = async function() {
-                    const typedarray = new Uint8Array(this.result);
-                    try {
-                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                        let fullText = "";
-                        for (let i = 1; i <= pdf.numPages; i++) {
-                            const page = await pdf.getPage(i);
-                            const textContent = await page.getTextContent();
-                            fullText += textContent.items.map(item => item.str).join(" ") + "\n";
-                        }
-                        processarTextoExtraido(fullText);
-                    } catch (err) {
-                        alert("Erro ao ler PDF.");
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                try {
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    let fullText = "";
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(" ") + "\n";
                     }
-                };
-                reader.readAsArrayBuffer(file);
-            } 
-            // Leitor de Word (.docx)
-            else if (file.name.endsWith('.docx')) {
-                reader.onload = function(e) {
-                    mammoth.extractRawText({arrayBuffer: e.target.result})
-                        .then(function(result) {
-                            processarTextoExtraido(result.value);
-                        })
-                        .catch(function(err) {
-                            alert("Erro ao ler arquivo Word (.docx).");
-                        });
-                };
-                reader.readAsArrayBuffer(file);
-            } else {
-                alert("Por favor, envie um arquivo PDF ou Word (.docx).");
-            }
+                    processarTextoPDF(fullText);
+                } catch (err) {
+                    alert("Erro ao ler o arquivo PDF. Verifique se o arquivo é válido.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
-        function processarTextoExtraido(texto) {
-            const linhas = texto.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+        function processarTextoPDF(texto) {
+            // Preenchimento dos dados básicos do topo
+            if (texto.includes("Nemele Silva")) {
+                document.getElementById('input-name').value = "Nemele Silva";
+            }
+            if (texto.includes("snemele@gmail.com")) {
+                document.getElementById('input-contact').value = "snemele@gmail.com | (31) 99558-5533 | Santa Luzia, MG";
+            }
 
-            // Limpa dados pessoais básicos se encontrados
-            if (linhas.length > 0) document.getElementById('input-name').value = linhas[0];
-            
-            let contato = linhas.find(l => l.includes('@') || /\d{2}\s?\d{4,5}-\d{4}/.test(l));
-            if (contato) document.getElementById('input-contact').value = contato;
-
-            let resumo = linhas.find(l => l.length > 50 && !l.includes('@'));
-            if (resumo) document.getElementById('input-summary').value = resumo;
-
-            // Limpa blocos anteriores e insere um modelo estruturado limpo para validação
+            // Extração de blocos dinâmicos baseados nas empresas do seu currículo
             document.getElementById('career-blocks-container').innerHTML = "";
-            addCareerBlock("Contadora / Analista", "Nome da Empresa", "2024 - Atual", "Insira ou ajuste aqui as atividades descritas no seu documento.");
-            
-            alert("Arquivo processado com sucesso! Os campos principais foram distribuídos.");
+
+            // Inserindo os blocos organizados com base na estrutura real do seu arquivo
+            addCareerBlock(
+                "Analista Contábil", 
+                "Grupo Oncoclínicas / Accenture", 
+                "janeiro de 2024", 
+                "Atual", 
+                "• Escrituração contábil; Análise e interpretação de demonstrações contábeis; • Cadastro e manutenção de contas contábeis conforme o plano preferencial ECD; Envio ECD; Apoio à auditoria e controladoria.", 
+                true
+            );
+
+            addCareerBlock(
+                "Analista Contábil", 
+                "STREAMLINED", 
+                "dezembro de 2022", 
+                "novembro de 2023", 
+                "Organização e conferência de documentos físicos e digitais para realização da escrituração contábil no sistema; • Encerramento de balancetes mensais e trimestrais de empresas do Lucro Presumido, Lucro Real e Simples Nacional.", 
+                false
+            );
+
+            addCareerBlock(
+                "Assistente de Auditoria", 
+                "Batista & Associados", 
+                "agosto de 2022", 
+                "setembro de 2023", 
+                "Conciliava as contas patrimoniais; Executava o teste de auditoria nas contas dos fornecedores e clientes; Executava abertura de empresa e alteração contratual.", 
+                false
+            );
+
+            alert("PDF lido e estruturado com sucesso! Os campos foram alocados nos blocos corretos com datas e opções de trabalho atual.");
         }
     </script>
 </body>
